@@ -1,12 +1,28 @@
 # Odin Recipes
 
-This project is part of The Odin Project curriculum. It is a simple recipe website built using basic HTML.  
-Skills demonstrated:
-- Structuring a webpage with HTML
-- Using headings, paragraphs, and lists
-- Linking between pages
-- Embedding images
+A simple recipe website built with HTML as part of The Odin Project curriculum.
 
-## Test App
+## Overview
 
-[Odin Recipes Demo](https://fixings.netlify.app/)
+This project demonstrates fundamental HTML skills through a collection of recipe pages with basic navigation and styling structure.
+
+
+## Skills Demonstrated
+
+- Semantic HTML structure
+- Links and navigation
+- Lists and text formatting
+- Image embedding
+- Multi-page organization
+
+`
+
+## Purpose
+
+Built as a learning exercise to practice HTML fundamentals and basic web development workflow.
+
+---
+
+Part of [The Odin Project](https://www.theodinproject.com/) curriculum
+
+
