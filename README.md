@@ -2,12 +2,12 @@
 
 A simple recipe website built with HTML as part of The Odin Project curriculum.
 
-## Overview
+# Overview
 
 This project demonstrates fundamental HTML skills through a collection of recipe pages with basic navigation and styling structure.
 
 
-## Skills Demonstrated
+# Skills Demonstrated
 
 - Semantic HTML structure
 - Links and navigation
@@ -15,14 +15,12 @@ This project demonstrates fundamental HTML skills through a collection of recipe
 - Image embedding
 - Multi-page organization
 
-`
-
-## Purpose
+# Purpose
 
 Built as a learning exercise to practice HTML fundamentals and basic web development workflow.
 
----
+# Demo
 
-Part of [The Odin Project](https://www.theodinproject.com/) curriculum
+[View Live Project](https://fixings.netlify.app/)
 
 
