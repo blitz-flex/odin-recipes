@@ -24,6 +24,27 @@ async function getRandomRecipes(count = 6) {
     return recipes;
 }
 
+// Search recipes by name
+async function searchRecipes(query) {
+    console.log(`🔍 Searching for: "${query}"`);
+    
+    try {
+        const response = await fetch(`${API_URL}/search.php?s=${query}`);
+        const data = await response.json();
+        
+        if(data.meals) {
+            console.log(`✅ Found ${data.meals.length} recipes`);
+            return data.meals;
+        } else {
+            console.log('❌ No recipes found');
+            return [];
+        }
+    } catch(error) {
+        console.error('❌ Search error:', error);
+        return [];
+    }
+}
+
 // Render recipes to page
 function renderRecipes(recipes) {
     const container = document.getElementById('recipes-container');
@@ -83,4 +104,39 @@ window.addEventListener('DOMContentLoaded', async () => {
     setTimeout(() => {
         renderRecipes(recipes);
     }, 300);
+    
+    // Setup search functionality
+    setupSearch();
 });
+
+// Setup search input and random button
+function setupSearch() {
+    const searchInput = document.getElementById('search-input');
+    const randomBtn = document.getElementById('random-btn');
+    let searchTimeout;
+    
+    // Search input with debounce
+    searchInput.addEventListener('input', (e) => {
+        const query = e.target.value.trim();
+        
+        // Clear previous timeout
+        clearTimeout(searchTimeout);
+        
+        // Wait 500ms after user stops typing
+        searchTimeout = setTimeout(async () => {
+            if(query.length > 2) {
+                // Search if 3+ characters
+                showLoading();
+                const recipes = await searchRecipes(query);
+                setTimeout(() => renderRecipes(recipes), 200);
+            } else if(query.length === 0) {
+                // Show random if empty
+                showLoading();
+                const recipes = await getRandomRecipes(6);
+                setTimeout(() => renderRecipes(recipes), 200);
+            }
+        }, 500);
+    });
+    
+    console.log('✅ Search functionality ready');
+}
