@@ -40,22 +40,36 @@ h1 {
     border-color: #b38b6d;
 }
 
-#random-btn {
-    padding: 1rem 1.5rem;
-    background: #b38b6d;
-    border: none;
+/* Categories */
+.categories {
+    display: flex;
+    gap: 0.8rem;
+    justify-content: center;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    padding: 0 1rem;
+}
+
+.category-btn {
+    padding: 0.7rem 1.5rem;
+    background: #fff;
+    border: 2px solid #e9e2d9;
     border-radius: 50px;
-    font-size: 1.5rem;
     cursor: pointer;
-    transition: transform 0.2s;
+    font-family: 'Georgia', serif;
+    font-size: 0.95rem;
+    transition: all 0.3s;
 }
 
-#random-btn:hover {
-    transform: scale(1.1);
+.category-btn:hover {
+    border-color: #b38b6d;
+    transform: translateY(-2px);
 }
 
-#random-btn:active {
-    transform: scale(0.95);
+.category-btn.active {
+    background: #b38b6d;
+    color: #fff;
+    border-color: #b38b6d;
 }
 
 /* news style  - Grid Layout */

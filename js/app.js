@@ -45,6 +45,27 @@ async function searchRecipes(query) {
     }
 }
 
+// Filter recipes by category
+async function filterByCategory(category) {
+    console.log(`🏷️ Filtering by category: "${category}"`);
+    
+    try {
+        const response = await fetch(`${API_URL}/filter.php?c=${category}`);
+        const data = await response.json();
+        
+        if(data.meals) {
+            console.log(`✅ Found ${data.meals.length} recipes in ${category}`);
+            return data.meals;
+        } else {
+            console.log('❌ No recipes found in this category');
+            return [];
+        }
+    } catch(error) {
+        console.error('❌ Filter error:', error);
+        return [];
+    }
+}
+
 // Render recipes to page
 function renderRecipes(recipes) {
     const container = document.getElementById('recipes-container');
@@ -107,12 +128,12 @@ window.addEventListener('DOMContentLoaded', async () => {
     
     // Setup search functionality
     setupSearch();
+    setupCategories();
 });
 
 // Setup search input and random button
 function setupSearch() {
     const searchInput = document.getElementById('search-input');
-    const randomBtn = document.getElementById('random-btn');
     let searchTimeout;
     
     // Search input with debounce
@@ -139,4 +160,37 @@ function setupSearch() {
     });
     
     console.log('✅ Search functionality ready');
+}
+
+// Setup category filters
+function setupCategories() {
+    const categoryBtns = document.querySelectorAll('.category-btn');
+    const searchInput = document.getElementById('search-input');
+    
+    categoryBtns.forEach(btn => {
+        btn.addEventListener('click', async (e) => {
+            // Remove active from all buttons
+            categoryBtns.forEach(b => b.classList.remove('active'));
+            
+            // Add active to clicked button
+            e.target.classList.add('active');
+            
+            // Clear search input
+            searchInput.value = '';
+            
+            const category = e.target.dataset.category;
+            showLoading();
+            
+            let recipes;
+            if(category === 'all') {
+                recipes = await getRandomRecipes(6);
+            } else {
+                recipes = await filterByCategory(category);
+            }
+            
+            setTimeout(() => renderRecipes(recipes), 200);
+        });
+    });
+    
+    console.log('✅ Category filters ready');
 }
