@@ -15,6 +15,49 @@ h1 {
     font-style: italic;
 }
 
+/* Search Container */
+.search-container {
+    max-width: 600px;
+    margin: 0 auto 2rem;
+    display: flex;
+    gap: 1rem;
+    padding: 0 1rem;
+}
+
+#search-input {
+    flex: 1;
+    padding: 1rem 1.5rem;
+    border: 2px solid #e9e2d9;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-family: 'Georgia', serif;
+    background: #fff;
+    transition: border-color 0.3s;
+}
+
+#search-input:focus {
+    outline: none;
+    border-color: #b38b6d;
+}
+
+#random-btn {
+    padding: 1rem 1.5rem;
+    background: #b38b6d;
+    border: none;
+    border-radius: 50px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+#random-btn:hover {
+    transform: scale(1.1);
+}
+
+#random-btn:active {
+    transform: scale(0.95);
+}
+
 /* news style  - Grid Layout */
 .recipes-grid {
     display: grid;
