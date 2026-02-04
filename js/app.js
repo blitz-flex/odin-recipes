@@ -29,7 +29,7 @@ const API_URL = 'https://www.themealdb.com/api/json/v1/1';
 // API Functions
 // ============================================
 
-async function getRandomRecipes(count = 6) {
+async function getRandomRecipes(count = 9) {
     const recipes = [];
     console.log(`🔄 Fetching ${count} random recipes...`);
     
@@ -251,7 +251,7 @@ function setupSearch() {
                 setTimeout(() => renderRecipes(recipes), 200);
             } else if(query.length === 0) {
                 showLoading();
-                const recipes = await getRandomRecipes(6);
+                const recipes = await getRandomRecipes(9);
                 setTimeout(() => renderRecipes(recipes), 200);
             }
         }, 500);
@@ -274,7 +274,7 @@ function setupCategories() {
             showLoading();
             
             const recipes = category === 'all' 
-                ? await getRandomRecipes(6)
+                ? await getRandomRecipes(9)
                 : await filterByCategory(category);
             
             setTimeout(() => renderRecipes(recipes), 200);
@@ -320,7 +320,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     
     setupDarkMode();
     
-    const recipes = await getRandomRecipes(6);
+    const recipes = await getRandomRecipes(9);
     console.log('✅ Loaded', recipes.length, 'recipes');
     
     setTimeout(() => renderRecipes(recipes), 300);
