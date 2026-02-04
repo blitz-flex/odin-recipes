@@ -145,7 +145,7 @@ function showLoading() {
 // Render Functions
 // ============================================
 
-function renderRecipes(recipes) {
+function renderRecipes(recipes, isInitialLoad = false) {
     const container = document.getElementById('recipes-container');
     const loadMoreBtn = document.getElementById('load-more-btn');
     
@@ -324,6 +324,8 @@ function setupLoadMore() {
     const loadMoreBtn = document.getElementById('load-more-btn');
     
     loadMoreBtn.addEventListener('click', async () => {
+        loadMoreBtn.style.display = 'none';
+        
         const newRecipes = await getRandomRecipes(9);
         allRecipes = [...allRecipes, ...newRecipes];
         displayedRecipes = allRecipes;
@@ -343,6 +345,7 @@ function setupLoadMore() {
         `).join('');
         
         container.insertAdjacentHTML('beforeend', newCards);
+        loadMoreBtn.style.display = 'block';
         
         console.log('✅ Loaded 9 more recipes. Total:', displayedRecipes.length);
     });
@@ -363,7 +366,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     const recipes = await getRandomRecipes(9);
     console.log('✅ Loaded', recipes.length, 'recipes');
     
-    setTimeout(() => renderRecipes(recipes), 300);
+    setTimeout(() => renderRecipes(recipes, true), 300);
     
     setupSearch();
     setupCategories();
