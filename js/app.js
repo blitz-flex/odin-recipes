@@ -2,6 +2,9 @@
 // Dark Mode Toggle
 // ============================================
 
+let allRecipes = [];
+let displayedRecipes = [];
+
 function setupDarkMode() {
     const toggleBtn = document.getElementById('theme-toggle');
     const savedTheme = localStorage.getItem('theme');
@@ -144,6 +147,7 @@ function showLoading() {
 
 function renderRecipes(recipes) {
     const container = document.getElementById('recipes-container');
+    const loadMoreBtn = document.getElementById('load-more-btn');
     
     if(!recipes?.length) {
         container.innerHTML = `
@@ -152,10 +156,14 @@ function renderRecipes(recipes) {
                 <p style="color: #999; font-size: 1.1rem;">Try a different search or category</p>
             </div>
         `;
+        loadMoreBtn.style.display = 'none';
         return;
     }
     
-    container.innerHTML = recipes.map(recipe => `
+    allRecipes = recipes;
+    displayedRecipes = recipes.slice(0, 9);
+    
+    container.innerHTML = displayedRecipes.map(recipe => `
         <div class="recipe-card" onclick="showRecipe('${recipe.idMeal}')">
             <img src="${recipe.strMealThumb}" 
                  alt="${recipe.strMeal}" 
@@ -168,7 +176,9 @@ function renderRecipes(recipes) {
         </div>
     `).join('');
     
-    console.log('🍴 Rendered', recipes.length, 'recipe cards');
+    loadMoreBtn.style.display = 'block';
+    
+    console.log('🍴 Rendered', displayedRecipes.length, 'of', allRecipes.length, 'recipes');
 }
 
 async function showRecipe(id) {
@@ -310,6 +320,34 @@ function setupModal() {
     console.log('✅ Modal functionality ready');
 }
 
+function setupLoadMore() {
+    const loadMoreBtn = document.getElementById('load-more-btn');
+    
+    loadMoreBtn.addEventListener('click', async () => {
+        const newRecipes = await getRandomRecipes(9);
+        allRecipes = [...allRecipes, ...newRecipes];
+        displayedRecipes = allRecipes;
+        
+        const container = document.getElementById('recipes-container');
+        container.innerHTML = displayedRecipes.map(recipe => `
+            <div class="recipe-card" onclick="showRecipe('${recipe.idMeal}')">
+                <img src="${recipe.strMealThumb}" 
+                     alt="${recipe.strMeal}" 
+                     class="recipe-image"
+                     loading="lazy">
+                <div class="recipe-info">
+                    <h3 class="recipe-title">${recipe.strMeal}</h3>
+                    <p class="recipe-meta">${recipe.strCategory} • ${recipe.strArea}</p>
+                </div>
+            </div>
+        `).join('');
+        
+        console.log('✅ Loaded 9 more recipes. Total:', displayedRecipes.length);
+    });
+    
+    console.log('✅ Load more functionality ready');
+}
+
 // ============================================
 // Initialization
 // ============================================
@@ -328,4 +366,5 @@ window.addEventListener('DOMContentLoaded', async () => {
     setupSearch();
     setupCategories();
     setupModal();
+    setupLoadMore();
 });

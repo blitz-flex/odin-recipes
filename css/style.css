@@ -472,3 +472,44 @@ body.dark-mode .theme-toggle .moon-icon {
 html {
     scroll-behavior: smooth;
 }
+
+/* Load More Button */
+.load-more-container {
+    display: flex;
+    justify-content: center;
+    padding: 2rem 0;
+    margin-top: 1rem;
+}
+
+.load-more-btn {
+    padding: 1rem 3rem;
+    background: var(--bg-secondary);
+    color: var(--accent);
+    border: 2px solid var(--accent);
+    border-radius: 50px;
+    font-family: 'Georgia', serif;
+    font-size: 1.05rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 2px 10px var(--shadow);
+}
+
+.load-more-btn:hover {
+    background: var(--accent);
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(179,139,109,0.3);
+}
+
+.load-more-btn:active {
+    transform: translateY(0);
+}
+
+.load-more-btn:disabled {
+    background: var(--bg-secondary);
+    color: var(--text-muted);
+    border-color: var(--border);
+    cursor: not-allowed;
+    transform: none;
+}
