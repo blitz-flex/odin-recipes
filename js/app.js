@@ -329,7 +329,7 @@ function setupLoadMore() {
         displayedRecipes = allRecipes;
         
         const container = document.getElementById('recipes-container');
-        container.innerHTML = displayedRecipes.map(recipe => `
+        const newCards = newRecipes.map(recipe => `
             <div class="recipe-card" onclick="showRecipe('${recipe.idMeal}')">
                 <img src="${recipe.strMealThumb}" 
                      alt="${recipe.strMeal}" 
@@ -341,6 +341,8 @@ function setupLoadMore() {
                 </div>
             </div>
         `).join('');
+        
+        container.insertAdjacentHTML('beforeend', newCards);
         
         console.log('✅ Loaded 9 more recipes. Total:', displayedRecipes.length);
     });
