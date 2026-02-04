@@ -1,10 +1,14 @@
-// TheMealDB API URL
+// ============================================
+// API Configuration
+// ============================================
 const API_URL = 'https://www.themealdb.com/api/json/v1/1';
 
-// Get random recipes
+// ============================================
+// API Functions
+// ============================================
+
 async function getRandomRecipes(count = 6) {
     const recipes = [];
-    
     console.log(`🔄 Fetching ${count} random recipes...`);
     
     for(let i = 0; i < count; i++) {
@@ -12,7 +16,7 @@ async function getRandomRecipes(count = 6) {
             const response = await fetch(`${API_URL}/random.php`);
             const data = await response.json();
             
-            if(data.meals && data.meals[0]) {
+            if(data.meals?.[0]) {
                 recipes.push(data.meals[0]);
                 console.log(`  ✅ ${i + 1}/${count}: ${data.meals[0].strMeal}`);
             }
@@ -24,7 +28,6 @@ async function getRandomRecipes(count = 6) {
     return recipes;
 }
 
-// Search recipes by name
 async function searchRecipes(query) {
     console.log(`🔍 Searching for: "${query}"`);
     
@@ -35,17 +38,16 @@ async function searchRecipes(query) {
         if(data.meals) {
             console.log(`✅ Found ${data.meals.length} recipes`);
             return data.meals;
-        } else {
-            console.log('❌ No recipes found');
-            return [];
         }
+        
+        console.log('❌ No recipes found');
+        return [];
     } catch(error) {
         console.error('❌ Search error:', error);
         return [];
     }
 }
 
-// Filter recipes by category
 async function filterByCategory(category) {
     console.log(`🏷️ Filtering by category: "${category}"`);
     
@@ -56,21 +58,72 @@ async function filterByCategory(category) {
         if(data.meals) {
             console.log(`✅ Found ${data.meals.length} recipes in ${category}`);
             return data.meals;
-        } else {
-            console.log('❌ No recipes found in this category');
-            return [];
         }
+        
+        console.log('❌ No recipes found in this category');
+        return [];
     } catch(error) {
         console.error('❌ Filter error:', error);
         return [];
     }
 }
 
-// Render recipes to page
+async function getRecipeDetails(id) {
+    console.log(`🍴 Fetching recipe details for ID: ${id}`);
+    
+    try {
+        const response = await fetch(`${API_URL}/lookup.php?i=${id}`);
+        const data = await response.json();
+        
+        if(data.meals?.[0]) {
+            console.log(`✅ Loaded: ${data.meals[0].strMeal}`);
+            return data.meals[0];
+        }
+        
+        console.log('❌ Recipe not found');
+        return null;
+    } catch(error) {
+        console.error('❌ Error fetching recipe details:', error);
+        return null;
+    }
+}
+
+// ============================================
+// Helper Functions
+// ============================================
+
+function getIngredients(recipe) {
+    const ingredients = [];
+    
+    for(let i = 1; i <= 20; i++) {
+        const ingredient = recipe[`strIngredient${i}`];
+        const measure = recipe[`strMeasure${i}`];
+        
+        if(ingredient?.trim()) {
+            ingredients.push(`${measure} ${ingredient}`.trim());
+        }
+    }
+    
+    return ingredients;
+}
+
+function showLoading() {
+    const container = document.getElementById('recipes-container');
+    container.innerHTML = `
+        <div style="grid-column: 1/-1; text-align: center; padding: 3rem;">
+            <p style="font-size: 1.2rem; color: #b38b6d;">🍳 Loading delicious recipes...</p>
+        </div>
+    `;
+}
+
+// ============================================
+// Render Functions
+// ============================================
+
 function renderRecipes(recipes) {
     const container = document.getElementById('recipes-container');
     
-    if(!recipes || recipes.length === 0) {
+    if(!recipes?.length) {
         container.innerHTML = `
             <div style="grid-column: 1/-1; text-align: center; padding: 2rem;">
                 <h3 style="color: #7c5c45;">😕 No recipes found</h3>
@@ -88,9 +141,7 @@ function renderRecipes(recipes) {
                  loading="lazy">
             <div class="recipe-info">
                 <h3 class="recipe-title">${recipe.strMeal}</h3>
-                <p class="recipe-meta">
-                    ${recipe.strCategory} • ${recipe.strArea}
-                </p>
+                <p class="recipe-meta">${recipe.strCategory} • ${recipe.strArea}</p>
             </div>
         </div>
     `).join('');
@@ -98,60 +149,85 @@ function renderRecipes(recipes) {
     console.log('🍴 Rendered', recipes.length, 'recipe cards');
 }
 
-// Temporary function (will be updated later)
-function showRecipe(id) {
-    alert('Recipe ID: ' + id + '\nWill show details in next phase!');
-}
-
-// Show loading state
-function showLoading() {
-    const container = document.getElementById('recipes-container');
-    container.innerHTML = `
-        <div style="grid-column: 1/-1; text-align: center; padding: 3rem;">
-            <p style="font-size: 1.2rem; color: #b38b6d;">🍳 Loading delicious recipes...</p>
+async function showRecipe(id) {
+    const modal = document.getElementById('recipe-modal');
+    const details = document.getElementById('recipe-details');
+    
+    modal.style.display = 'block';
+    details.innerHTML = `
+        <div style="text-align:center; padding:3rem;">
+            <p style="font-size: 1.2rem; color: #b38b6d;">🍳 Loading recipe...</p>
         </div>
     `;
+    
+    const recipe = await getRecipeDetails(id);
+    
+    if(!recipe) {
+        details.innerHTML = `
+            <div style="text-align:center; padding:2rem;">
+                <h3 style="color: #e74c3c;">😕 Recipe not found</h3>
+                <p>Please try another recipe</p>
+            </div>
+        `;
+        return;
+    }
+    
+    const ingredients = getIngredients(recipe);
+    
+    details.innerHTML = `
+        <img src="${recipe.strMealThumb}" 
+             alt="${recipe.strMeal}" 
+             class="recipe-detail-image">
+        
+        <div class="recipe-detail-content">
+            <h2 class="recipe-detail-title">${recipe.strMeal}</h2>
+            <p class="recipe-detail-meta">
+                <strong>${recipe.strCategory}</strong> • ${recipe.strArea}
+            </p>
+            
+            <div class="section">
+                <h3>📝 Ingredients</h3>
+                <ul class="ingredients-list">
+                    ${ingredients.map(ing => `<li>${ing}</li>`).join('')}
+                </ul>
+            </div>
+            
+            <div class="section">
+                <h3>👨‍🍳 Instructions</h3>
+                <div class="instructions">${recipe.strInstructions}</div>
+            </div>
+            
+            ${recipe.strYoutube ? `
+                <a href="${recipe.strYoutube}" 
+                   target="_blank" 
+                   class="video-link">
+                    📺 Watch Video Tutorial
+                </a>
+            ` : ''}
+        </div>
+    `;
+    
+    console.log('✅ Recipe details displayed');
 }
 
-// Load recipes when page loads
-window.addEventListener('DOMContentLoaded', async () => {
-    console.log('🍳 Loading recipes from TheMealDB API...');
-    showLoading();
-    
-    const recipes = await getRandomRecipes(6);
-    console.log('✅ Loaded', recipes.length, 'recipes');
-    
-    // Small delay for better UX
-    setTimeout(() => {
-        renderRecipes(recipes);
-    }, 300);
-    
-    // Setup search functionality
-    setupSearch();
-    setupCategories();
-});
+// ============================================
+// Setup Functions
+// ============================================
 
-// Setup search input and random button
 function setupSearch() {
     const searchInput = document.getElementById('search-input');
     let searchTimeout;
     
-    // Search input with debounce
     searchInput.addEventListener('input', (e) => {
         const query = e.target.value.trim();
-        
-        // Clear previous timeout
         clearTimeout(searchTimeout);
         
-        // Wait 500ms after user stops typing
         searchTimeout = setTimeout(async () => {
             if(query.length > 2) {
-                // Search if 3+ characters
                 showLoading();
                 const recipes = await searchRecipes(query);
                 setTimeout(() => renderRecipes(recipes), 200);
             } else if(query.length === 0) {
-                // Show random if empty
                 showLoading();
                 const recipes = await getRandomRecipes(6);
                 setTimeout(() => renderRecipes(recipes), 200);
@@ -162,31 +238,22 @@ function setupSearch() {
     console.log('✅ Search functionality ready');
 }
 
-// Setup category filters
 function setupCategories() {
     const categoryBtns = document.querySelectorAll('.category-btn');
     const searchInput = document.getElementById('search-input');
     
     categoryBtns.forEach(btn => {
         btn.addEventListener('click', async (e) => {
-            // Remove active from all buttons
             categoryBtns.forEach(b => b.classList.remove('active'));
-            
-            // Add active to clicked button
             e.target.classList.add('active');
-            
-            // Clear search input
             searchInput.value = '';
             
             const category = e.target.dataset.category;
             showLoading();
             
-            let recipes;
-            if(category === 'all') {
-                recipes = await getRandomRecipes(6);
-            } else {
-                recipes = await filterByCategory(category);
-            }
+            const recipes = category === 'all' 
+                ? await getRandomRecipes(6)
+                : await filterByCategory(category);
             
             setTimeout(() => renderRecipes(recipes), 200);
         });
@@ -194,3 +261,47 @@ function setupCategories() {
     
     console.log('✅ Category filters ready');
 }
+
+function setupModal() {
+    const modal = document.getElementById('recipe-modal');
+    const closeBtn = document.querySelector('.close');
+    
+    closeBtn.addEventListener('click', () => {
+        modal.style.display = 'none';
+        console.log('❌ Modal closed');
+    });
+    
+    window.addEventListener('click', (e) => {
+        if(e.target === modal) {
+            modal.style.display = 'none';
+            console.log('❌ Modal closed (outside click)');
+        }
+    });
+    
+    document.addEventListener('keydown', (e) => {
+        if(e.key === 'Escape' && modal.style.display === 'block') {
+            modal.style.display = 'none';
+            console.log('❌ Modal closed (ESC key)');
+        }
+    });
+    
+    console.log('✅ Modal functionality ready');
+}
+
+// ============================================
+// Initialization
+// ============================================
+
+window.addEventListener('DOMContentLoaded', async () => {
+    console.log('🍳 Loading recipes from TheMealDB API...');
+    showLoading();
+    
+    const recipes = await getRandomRecipes(6);
+    console.log('✅ Loaded', recipes.length, 'recipes');
+    
+    setTimeout(() => renderRecipes(recipes), 300);
+    
+    setupSearch();
+    setupCategories();
+    setupModal();
+});
