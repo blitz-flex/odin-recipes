@@ -1,4 +1,26 @@
 // ============================================
+// Dark Mode Toggle
+// ============================================
+
+function setupDarkMode() {
+    const toggleBtn = document.getElementById('theme-toggle');
+    const savedTheme = localStorage.getItem('theme');
+    
+    if(savedTheme === 'dark') {
+        document.body.classList.add('dark-mode');
+    }
+    
+    toggleBtn.addEventListener('click', () => {
+        document.body.classList.toggle('dark-mode');
+        const isDark = document.body.classList.contains('dark-mode');
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        console.log(`🌙 Theme: ${isDark ? 'Dark' : 'Light'}`);
+    });
+    
+    console.log('✅ Dark mode ready');
+}
+
+// ============================================
 // API Configuration
 // ============================================
 const API_URL = 'https://www.themealdb.com/api/json/v1/1';
@@ -126,8 +148,8 @@ function renderRecipes(recipes) {
     if(!recipes?.length) {
         container.innerHTML = `
             <div style="grid-column: 1/-1; text-align: center; padding: 2rem;">
-                <h3 style="color: #7c5c45;">😕 No recipes found</h3>
-                <p style="color: #999;">Try a different search or category</p>
+                <h3 style="color: #7c5c45; font-size: 2rem;">🤷‍♂️ No recipes found</h3>
+                <p style="color: #999; font-size: 1.1rem;">Try a different search or category</p>
             </div>
         `;
         return;
@@ -186,9 +208,9 @@ async function showRecipe(id) {
             </p>
             
             <div class="section">
-                <h3>📝 Ingredients</h3>
+                <h3>📋 Ingredients</h3>
                 <ul class="ingredients-list">
-                    ${ingredients.map(ing => `<li>${ing}</li>`).join('')}
+                    ${ingredients.map(ing => `<li>✅ ${ing}</li>`).join('')}
                 </ul>
             </div>
             
@@ -201,7 +223,7 @@ async function showRecipe(id) {
                 <a href="${recipe.strYoutube}" 
                    target="_blank" 
                    class="video-link">
-                    📺 Watch Video Tutorial
+                    🎥 Watch Video Tutorial
                 </a>
             ` : ''}
         </div>
@@ -295,6 +317,8 @@ function setupModal() {
 window.addEventListener('DOMContentLoaded', async () => {
     console.log('🍳 Loading recipes from TheMealDB API...');
     showLoading();
+    
+    setupDarkMode();
     
     const recipes = await getRandomRecipes(6);
     console.log('✅ Loaded', recipes.length, 'recipes');
