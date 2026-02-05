@@ -71,11 +71,9 @@ h1 {
 
 /* Theme Toggle Button */
 .theme-toggle {
-    position: fixed;
-    top: 1.5rem;
-    right: 1.5rem;
-    width: 50px;
-    height: 50px;
+    position: static;
+    width: 46px;
+    height: 46px;
     border-radius: 50%;
     border: none;
     background: var(--bg-secondary);
@@ -83,10 +81,10 @@ h1 {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.5rem;
+    font-size: 1.35rem;
     transition: all 0.3s;
-    z-index: 1000;
     box-shadow: 0 4px 15px var(--shadow);
+    flex: 0 0 auto;
 }
 
 .theme-toggle:hover {
@@ -128,11 +126,12 @@ body.dark-mode .theme-toggle .moon-icon {
 
 /* Search Container */
 .search-container {
-    max-width: 600px;
+    max-width: 720px;
     margin: 0 auto 1rem;
     display: flex;
     gap: 1rem;
     padding: 0 1rem;
+    align-items: center;
 }
 
 #search-input {
@@ -472,6 +471,12 @@ body.dark-mode .theme-toggle .moon-icon {
     .search-container {
         padding: 0;
         margin-bottom: 0.75rem;
+    }
+
+    .theme-toggle {
+        width: 42px;
+        height: 42px;
+        font-size: 1.2rem;
     }
     
     .controls-bar {
