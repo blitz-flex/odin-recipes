@@ -595,9 +595,30 @@ html {
     }
 
     .close,
-    .recipe-actions,
-    .video-link {
+    .print-btn {
         display: none !important;
+    }
+
+    .recipe-actions {
+        display: block !important;
+        margin-top: 1rem !important;
+    }
+
+    .video-link {
+        display: inline !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        background: transparent !important;
+        color: #000 !important;
+        text-decoration: underline !important;
+        box-shadow: none !important;
+        font-weight: 600 !important;
+    }
+
+    .video-link::after {
+        content: " (" attr(href) ")" !important;
+        font-weight: 400 !important;
+        word-break: break-all !important;
     }
 
     .recipe-detail-image {
