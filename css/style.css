@@ -12,21 +12,23 @@
     --shadow: rgba(0,0,0,0.05);
     --shadow-hover: rgba(0,0,0,0.15);
     --modal-bg: rgba(0,0,0,0.85);
+    --controls-bg: rgba(252,251,248,0.78);
 }
 
 body.dark-mode {
-    --bg-primary: #1a1a1a;
-    --bg-secondary: #2d2d2d;
-    --bg-section: #252525;
-    --text-primary: #e0e0e0;
-    --text-secondary: #b0b0b0;
-    --text-muted: #888;
+    --bg-primary: #0f1115;
+    --bg-secondary: #171a21;
+    --bg-section: #131721;
+    --text-primary: #e7eaf0;
+    --text-secondary: #aab2c0;
+    --text-muted: #7d8798;
     --accent: #d4a574;
-    --accent-dark: #b38b6d;
-    --border: #404040;
-    --shadow: rgba(0,0,0,0.3);
-    --shadow-hover: rgba(0,0,0,0.5);
-    --modal-bg: rgba(0,0,0,0.95);
+    --accent-dark: #e7c19b;
+    --border: #2a3240;
+    --shadow: rgba(0,0,0,0.45);
+    --shadow-hover: rgba(0,0,0,0.65);
+    --modal-bg: rgba(0,0,0,0.82);
+    --controls-bg: rgba(15,17,21,0.72);
 }
 
 body {
@@ -55,9 +57,16 @@ h1 {
     position: sticky;
     top: 0;
     z-index: 900;
-    background: var(--bg-primary);
-    padding: 1rem 0;
+    background: transparent;
+    padding: 0.75rem 0;
     margin-bottom: 2rem;
+    transition: background 0.25s ease, box-shadow 0.25s ease, backdrop-filter 0.25s ease;
+}
+
+.controls-bar.is-stuck {
+    background: var(--controls-bg);
+    backdrop-filter: blur(8px);
+    box-shadow: 0 6px 16px var(--shadow);
 }
 
 /* Theme Toggle Button */
@@ -255,7 +264,7 @@ body.dark-mode .theme-toggle .moon-icon {
     max-width: 900px;
     border-radius: 16px;
     position: relative;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    box-shadow: 0 20px 60px var(--shadow-hover);
     animation: modalFade 0.3s ease;
     overflow: hidden;
 }
@@ -598,6 +607,7 @@ html {
     }
 
     .theme-toggle,
+    .controls-bar,
     .search-container,
     .categories,
     .recipes-grid,
