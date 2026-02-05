@@ -616,9 +616,7 @@ html {
     }
 
     .video-link::after {
-        content: " (" attr(href) ")" !important;
-        font-weight: 400 !important;
-        word-break: break-all !important;
+        content: "" !important;
     }
 
     .recipe-detail-image {

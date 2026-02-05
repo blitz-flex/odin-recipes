@@ -156,6 +156,33 @@ function formatRecipeMeta(recipe) {
     return category || area || '';
 }
 
+function formatPrintUrl(rawUrl) {
+    if(!rawUrl) return '';
+
+    try {
+        const url = new URL(rawUrl);
+        const host = url.hostname.replace(/^www\./, '');
+
+        if(host === 'youtube.com' || host === 'm.youtube.com') {
+            const id = url.searchParams.get('v');
+            if(id) return `youtu.be/${id}`;
+        }
+
+        if(host === 'youtu.be') {
+            const id = url.pathname.replace(/^\/+/, '').split('/')[0];
+            if(id) return `youtu.be/${id}`;
+        }
+
+        const path = url.pathname && url.pathname !== '/' ? url.pathname.replace(/\/$/, '') : '';
+        return `${host}${path}`;
+    } catch {
+        return String(rawUrl)
+            .replace(/^https?:\/\//, '')
+            .replace(/^www\./, '')
+            .split(/[?#]/)[0];
+    }
+}
+
 function recipeCardHtml(recipe) {
     const meta = formatRecipeMeta(recipe);
 
@@ -281,6 +308,7 @@ async function showRecipe(id) {
                     <a href="${recipe.strYoutube}" 
                        target="_blank" 
                        rel="noopener noreferrer"
+                       data-print-url="${formatPrintUrl(recipe.strYoutube)}"
                        class="video-link">
                         🎥 Watch Video Tutorial
                     </a>
