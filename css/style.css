@@ -50,6 +50,16 @@ h1 {
     font-style: italic;
 }
 
+/* Sticky Controls Bar (Search + Categories) */
+.controls-bar {
+    position: sticky;
+    top: 0;
+    z-index: 900;
+    background: var(--bg-primary);
+    padding: 1rem 0;
+    margin-bottom: 2rem;
+}
+
 /* Theme Toggle Button */
 .theme-toggle {
     position: fixed;
@@ -110,7 +120,7 @@ body.dark-mode .theme-toggle .moon-icon {
 /* Search Container */
 .search-container {
     max-width: 600px;
-    margin: 0 auto 2rem;
+    margin: 0 auto 1rem;
     display: flex;
     gap: 1rem;
     padding: 0 1rem;
@@ -138,7 +148,7 @@ body.dark-mode .theme-toggle .moon-icon {
     display: flex;
     gap: 0.8rem;
     justify-content: center;
-    margin-bottom: 2rem;
+    margin-bottom: 0;
     flex-wrap: wrap;
     padding: 0 1rem;
 }
@@ -452,16 +462,33 @@ body.dark-mode .theme-toggle .moon-icon {
     
     .search-container {
         padding: 0;
+        margin-bottom: 0.75rem;
+    }
+    
+    .controls-bar {
+        padding: 0.75rem 0;
+        margin-bottom: 1.25rem;
     }
     
     .categories {
         gap: 0.5rem;
         padding: 0;
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+    }
+    
+    .categories::-webkit-scrollbar {
+        display: none;
     }
     
     .category-btn {
         padding: 0.5rem 1rem;
         font-size: 0.85rem;
+        flex: 0 0 auto;
+        white-space: nowrap;
     }
     
     .recipes-grid {
