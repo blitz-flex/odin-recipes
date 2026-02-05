@@ -346,22 +346,27 @@ async function showRecipe(id) {
                 <div class="instructions">${recipe.strInstructions}</div>
             </div>
             
-            <div class="recipe-actions" aria-label="Recipe actions">
-                ${recipe.strYoutube ? `
-                    <a href="${recipe.strYoutube}" 
-                       target="_blank" 
-                       rel="noopener noreferrer"
-                       data-print-url="${formatPrintUrl(recipe.strYoutube)}"
-                       class="video-link">
-                        🎥 Watch Video Tutorial
-                    </a>
-                ` : ''}
-                <button type="button" class="action-btn print-btn" data-action="print-recipe">
-                    🖨️ Print Recipe 
-                </button>
-            </div>
-        </div>
-    `;
+	            <div class="recipe-actions" aria-label="Recipe actions">
+	                ${recipe.strYoutube ? `
+	                    <a href="${recipe.strYoutube}" 
+	                       target="_blank" 
+	                       rel="noopener noreferrer"
+	                       data-print-url="${formatPrintUrl(recipe.strYoutube)}"
+	                       class="video-link">
+	                        🎥 Watch Video Tutorial
+	                    </a>
+	                ` : ''}
+	                <div class="share-actions" aria-label="Share recipe">
+	                    <button type="button" class="action-btn share-btn" data-action="share-recipe">
+	                        🔗 Share
+	                    </button>
+	                </div>
+	                <button type="button" class="action-btn print-btn" data-action="print-recipe">
+	                    🖨️ Print Recipe 
+	                </button>
+	            </div>
+	        </div>
+	    `;
     
     console.log('✅ Recipe details displayed');
 }
