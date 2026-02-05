@@ -338,6 +338,17 @@ body.dark-mode .theme-toggle .moon-icon {
     margin: 1.5rem 0 0 0;
 }
 
+.actions-right {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.7rem;
+    margin-left: auto;
+}
+
+.video-link {
+    margin-right: auto;
+}
+
 .share-actions {
     display: inline-flex;
     align-items: center;
