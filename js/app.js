@@ -4,6 +4,12 @@
 
 let allRecipes = [];
 let displayedRecipes = [];
+const PAGE_SIZE = 9;
+
+let currentMode = 'random'; // 'random' | 'search' | 'category'
+let currentCategory = 'all';
+let currentQuery = '';
+const ORIGINAL_TITLE = document.title;
 
 function setupDarkMode() {
     const toggleBtn = document.getElementById('theme-toggle');
@@ -57,7 +63,7 @@ async function searchRecipes(query) {
     console.log(`🔍 Searching for: "${query}"`);
     
     try {
-        const response = await fetch(`${API_URL}/search.php?s=${query}`);
+        const response = await fetch(`${API_URL}/search.php?s=${encodeURIComponent(query)}`);
         const data = await response.json();
         
         if(data.meals) {
@@ -77,7 +83,7 @@ async function filterByCategory(category) {
     console.log(`🏷️ Filtering by category: "${category}"`);
     
     try {
-        const response = await fetch(`${API_URL}/filter.php?c=${category}`);
+        const response = await fetch(`${API_URL}/filter.php?c=${encodeURIComponent(category)}`);
         const data = await response.json();
         
         if(data.meals) {
@@ -124,16 +130,69 @@ function getIngredients(recipe) {
         const ingredient = recipe[`strIngredient${i}`];
         const measure = recipe[`strMeasure${i}`];
         
-        if(ingredient?.trim()) {
-            ingredients.push(`${measure} ${ingredient}`.trim());
+        const ingredientText = ingredient?.trim();
+        const measureText = measure?.trim();
+
+        if(ingredientText) {
+            ingredients.push([measureText, ingredientText].filter(Boolean).join(' '));
         }
     }
     
     return ingredients;
 }
 
+function setActiveCategory(category) {
+    const categoryBtns = document.querySelectorAll('.category-btn');
+    categoryBtns.forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.category === category);
+    });
+}
+
+function formatRecipeMeta(recipe) {
+    const category = recipe.strCategory || (currentMode === 'category' ? currentCategory : '');
+    const area = recipe.strArea || '';
+
+    if(category && area) return `${category} • ${area}`;
+    return category || area || '';
+}
+
+function recipeCardHtml(recipe) {
+    const meta = formatRecipeMeta(recipe);
+
+    return `
+        <div class="recipe-card" onclick="showRecipe('${recipe.idMeal}')">
+            <img src="${recipe.strMealThumb}" 
+                 alt="${recipe.strMeal}" 
+                 class="recipe-image"
+                 loading="lazy">
+            <div class="recipe-info">
+                <h3 class="recipe-title">${recipe.strMeal}</h3>
+                ${meta ? `<p class="recipe-meta">${meta}</p>` : ''}
+            </div>
+        </div>
+    `;
+}
+
+function updateLoadMoreVisibility() {
+    const loadMoreBtn = document.getElementById('load-more-btn');
+    if(!loadMoreBtn) return;
+
+    if(currentMode === 'random') {
+        loadMoreBtn.style.display = allRecipes.length ? 'block' : 'none';
+        return;
+    }
+
+    loadMoreBtn.style.display = displayedRecipes.length < allRecipes.length ? 'block' : 'none';
+}
+
 function showLoading() {
     const container = document.getElementById('recipes-container');
+    const loadMoreBtn = document.getElementById('load-more-btn');
+
+    if(loadMoreBtn) {
+        loadMoreBtn.style.display = 'none';
+    }
+
     container.innerHTML = `
         <div style="grid-column: 1/-1; text-align: center; padding: 3rem;">
             <p style="font-size: 1.2rem; color: #b38b6d;">🍳 Loading delicious recipes...</p>
@@ -161,22 +220,10 @@ function renderRecipes(recipes, isInitialLoad = false) {
     }
     
     allRecipes = recipes;
-    displayedRecipes = recipes.slice(0, 9);
-    
-    container.innerHTML = displayedRecipes.map(recipe => `
-        <div class="recipe-card" onclick="showRecipe('${recipe.idMeal}')">
-            <img src="${recipe.strMealThumb}" 
-                 alt="${recipe.strMeal}" 
-                 class="recipe-image"
-                 loading="lazy">
-            <div class="recipe-info">
-                <h3 class="recipe-title">${recipe.strMeal}</h3>
-                <p class="recipe-meta">${recipe.strCategory} • ${recipe.strArea}</p>
-            </div>
-        </div>
-    `).join('');
-    
-    loadMoreBtn.style.display = 'block';
+    displayedRecipes = recipes.slice(0, PAGE_SIZE);
+
+    container.innerHTML = displayedRecipes.map(recipeCardHtml).join('');
+    updateLoadMoreVisibility();
     
     console.log('🍴 Rendered', displayedRecipes.length, 'of', allRecipes.length, 'recipes');
 }
@@ -229,13 +276,19 @@ async function showRecipe(id) {
                 <div class="instructions">${recipe.strInstructions}</div>
             </div>
             
-            ${recipe.strYoutube ? `
-                <a href="${recipe.strYoutube}" 
-                   target="_blank" 
-                   class="video-link">
-                    🎥 Watch Video Tutorial
-                </a>
-            ` : ''}
+            <div class="recipe-actions" aria-label="Recipe actions">
+                ${recipe.strYoutube ? `
+                    <a href="${recipe.strYoutube}" 
+                       target="_blank" 
+                       rel="noopener noreferrer"
+                       class="video-link">
+                        🎥 Watch Video Tutorial
+                    </a>
+                ` : ''}
+                <button type="button" class="action-btn print-btn" data-action="print-recipe">
+                    🖨️ Print Recipe 
+                </button>
+            </div>
         </div>
     `;
     
@@ -256,12 +309,22 @@ function setupSearch() {
         
         searchTimeout = setTimeout(async () => {
             if(query.length > 2) {
+                currentMode = 'search';
+                currentQuery = query;
+                currentCategory = 'all';
+                setActiveCategory('all');
+
                 showLoading();
                 const recipes = await searchRecipes(query);
                 setTimeout(() => renderRecipes(recipes), 200);
             } else if(query.length === 0) {
+                currentMode = 'random';
+                currentQuery = '';
+                currentCategory = 'all';
+                setActiveCategory('all');
+
                 showLoading();
-                const recipes = await getRandomRecipes(9);
+                const recipes = await getRandomRecipes(PAGE_SIZE);
                 setTimeout(() => renderRecipes(recipes), 200);
             }
         }, 500);
@@ -276,16 +339,23 @@ function setupCategories() {
     
     categoryBtns.forEach(btn => {
         btn.addEventListener('click', async (e) => {
-            categoryBtns.forEach(b => b.classList.remove('active'));
-            e.target.classList.add('active');
+            const category = e.target.dataset.category;
+            setActiveCategory(category);
             searchInput.value = '';
             
-            const category = e.target.dataset.category;
             showLoading();
-            
-            const recipes = category === 'all' 
-                ? await getRandomRecipes(9)
-                : await filterByCategory(category);
+
+            currentQuery = '';
+            currentCategory = category;
+
+            let recipes;
+            if(category === 'all') {
+                currentMode = 'random';
+                recipes = await getRandomRecipes(PAGE_SIZE);
+            } else {
+                currentMode = 'category';
+                recipes = await filterByCategory(category);
+            }
             
             setTimeout(() => renderRecipes(recipes), 200);
         });
@@ -320,34 +390,70 @@ function setupModal() {
     console.log('✅ Modal functionality ready');
 }
 
+function setupPrintRecipe() {
+    const details = document.getElementById('recipe-details');
+    if(!details) return;
+
+    const cleanup = () => {
+        document.body.classList.remove('print-mode');
+        document.title = ORIGINAL_TITLE;
+    };
+
+    window.addEventListener('afterprint', cleanup);
+
+    details.addEventListener('click', (e) => {
+        const btn = e.target.closest('[data-action="print-recipe"]');
+        if(!btn) return;
+
+        e.preventDefault();
+
+        const titleEl = document.querySelector('.recipe-detail-title');
+        const recipeTitle = titleEl?.textContent?.trim();
+        if(recipeTitle) {
+            document.title = `${recipeTitle} — Print`;
+        }
+
+        document.body.classList.add('print-mode');
+
+        // Some browsers don't reliably fire `afterprint` on cancel.
+        // `focus` is a reliable fallback when returning from the dialog.
+        window.addEventListener('focus', cleanup, { once: true });
+
+        window.print();
+        console.log('🖨️ Print triggered');
+    });
+
+    console.log('✅ Print recipe ready');
+}
+
 function setupLoadMore() {
     const loadMoreBtn = document.getElementById('load-more-btn');
     
     loadMoreBtn.addEventListener('click', async () => {
-        loadMoreBtn.style.display = 'none';
-        
-        const newRecipes = await getRandomRecipes(9);
-        allRecipes = [...allRecipes, ...newRecipes];
-        displayedRecipes = allRecipes;
-        
-        const container = document.getElementById('recipes-container');
-        const newCards = newRecipes.map(recipe => `
-            <div class="recipe-card" onclick="showRecipe('${recipe.idMeal}')">
-                <img src="${recipe.strMealThumb}" 
-                     alt="${recipe.strMeal}" 
-                     class="recipe-image"
-                     loading="lazy">
-                <div class="recipe-info">
-                    <h3 class="recipe-title">${recipe.strMeal}</h3>
-                    <p class="recipe-meta">${recipe.strCategory} • ${recipe.strArea}</p>
-                </div>
-            </div>
-        `).join('');
-        
-        container.insertAdjacentHTML('beforeend', newCards);
-        loadMoreBtn.style.display = 'block';
-        
-        console.log('✅ Loaded 9 more recipes. Total:', displayedRecipes.length);
+        loadMoreBtn.disabled = true;
+        const previousText = loadMoreBtn.textContent;
+        loadMoreBtn.textContent = 'Loading...';
+
+        try {
+            const container = document.getElementById('recipes-container');
+
+            if(currentMode === 'random') {
+                const newRecipes = await getRandomRecipes(PAGE_SIZE);
+                allRecipes = [...allRecipes, ...newRecipes];
+                displayedRecipes = [...displayedRecipes, ...newRecipes];
+                container.insertAdjacentHTML('beforeend', newRecipes.map(recipeCardHtml).join(''));
+                console.log(`✅ Loaded ${newRecipes.length} more recipes. Total:`, displayedRecipes.length);
+            } else {
+                const nextRecipes = allRecipes.slice(displayedRecipes.length, displayedRecipes.length + PAGE_SIZE);
+                displayedRecipes = [...displayedRecipes, ...nextRecipes];
+                container.insertAdjacentHTML('beforeend', nextRecipes.map(recipeCardHtml).join(''));
+                console.log(`✅ Loaded ${nextRecipes.length} more recipes. Total:`, displayedRecipes.length);
+            }
+        } finally {
+            loadMoreBtn.disabled = false;
+            loadMoreBtn.textContent = previousText;
+            updateLoadMoreVisibility();
+        }
     });
     
     console.log('✅ Load more functionality ready');
@@ -363,7 +469,8 @@ window.addEventListener('DOMContentLoaded', async () => {
     
     setupDarkMode();
     
-    const recipes = await getRandomRecipes(9);
+    setActiveCategory('all');
+    const recipes = await getRandomRecipes(PAGE_SIZE);
     console.log('✅ Loaded', recipes.length, 'recipes');
     
     setTimeout(() => renderRecipes(recipes, true), 300);
@@ -371,5 +478,6 @@ window.addEventListener('DOMContentLoaded', async () => {
     setupSearch();
     setupCategories();
     setupModal();
+    setupPrintRecipe();
     setupLoadMore();
 });
