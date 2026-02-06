@@ -350,14 +350,17 @@ async function showRecipe(id) {
             
 	            <div class="recipe-actions" aria-label="Recipe actions">
 	                ${recipe.strYoutube ? `
-	                    <a href="${recipe.strYoutube}" 
-	                       target="_blank" 
-	                       rel="noopener noreferrer"
-	                       data-print-url="${formatPrintUrl(recipe.strYoutube)}"
-	                       class="video-link">
-	                        🎥 Watch Video Tutorial
-	                    </a>
-	                ` : ''}
+		                    <a href="${recipe.strYoutube}" 
+		                       target="_blank" 
+		                       rel="noopener noreferrer"
+		                       data-print-url="${formatPrintUrl(recipe.strYoutube)}"
+		                       class="video-link">
+		                        <svg class="video-link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+		                            <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm-2.2 6.9 7 3.9-7 3.9V8.9z"/>
+		                        </svg>
+		                        <span>Watch Video Tutorial</span>
+		                    </a>
+		                ` : ''}
 	                <div class="actions-right" aria-label="Recipe actions right">
 	                    <div class="share-actions" aria-label="Share recipe">
 	                        <button type="button" class="share-icon-btn" data-action="share-facebook" aria-label="Share on Facebook" title="Facebook">
@@ -375,14 +378,14 @@ async function showRecipe(id) {
 	                                <path d="M18.9 2H22l-6.8 7.8L23 22h-6.8l-5.3-6.5L5 22H2l7.4-8.5L1.4 2H8.3l4.8 5.8L18.9 2zm-1.2 18h1.7L7.3 3.9H5.5L17.7 20z"/>
 	                            </svg>
 	                        </button>
-	                    </div>
-	                    <button type="button" class="action-btn print-btn" data-action="print-recipe">
-	                        🖨️ Print Recipe 
-	                    </button>
-	                </div>
-	            </div>
-	        </div>
-	    `;
+		                    </div>
+		                    <button type="button" class="action-btn print-btn" data-action="print-recipe">
+		                        🖨️ Print Recipe
+		                    </button>
+		                </div>
+		            </div>
+		        </div>
+		    `;
     
     console.log('✅ Recipe details displayed');
 }
