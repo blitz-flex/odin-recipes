@@ -356,7 +356,7 @@ async function showRecipe(id) {
             <div class="section">
                 <h3>📋 Ingredients</h3>
                 <ul class="ingredients-list">
-                    ${ingredients.map(ing => `<li>✅ ${ing}</li>`).join('')}
+                    ${ingredients.map(ing => `<li>${ing}</li>`).join('')}
                 </ul>
             </div>
             
