@@ -168,7 +168,7 @@ body.dark-mode .theme-toggle .moon-icon {
     border-radius: 50px;
     cursor: pointer;
     font-family: 'Georgia', serif;
-    font-size: 0.95rem;
+    font-size: 1.2rem;
     color: var(--text-primary);
     transition: all 0.3s;
 }
@@ -589,7 +589,7 @@ body.dark-mode .theme-toggle .moon-icon {
     
     .category-btn {
         padding: 0.5rem 1rem;
-        font-size: 0.85rem;
+        font-size: 1.08rem;
         flex: 0 0 auto;
         white-space: nowrap;
     }
