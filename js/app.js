@@ -73,6 +73,23 @@ function setupStickyControlsBar() {
     }, { passive: true });
 }
 
+function setupTitleAnimation() {
+    const title = document.querySelector('.site-title');
+    if(!title) return;
+
+    const text = title.textContent;
+    if(!text) return;
+
+    title.setAttribute('aria-label', text);
+    const chars = Array.from(text);
+    title.innerHTML = chars.map((char, index) => {
+        if(char === ' ') {
+            return `<span class="title-space" aria-hidden="true">&nbsp;</span>`;
+        }
+        return `<span class="title-char" style="--char-index:${index}" aria-hidden="true">${char}</span>`;
+    }).join('');
+}
+
 // ============================================
 // API Configuration
 // ============================================
@@ -635,6 +652,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     
     setupDarkMode();
     setupStickyControlsBar();
+    setupTitleAnimation();
     
     setActiveCategory('all');
     const recipes = await getRandomRecipes(PAGE_SIZE);
