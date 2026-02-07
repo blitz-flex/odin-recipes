@@ -46,73 +46,22 @@ body.print-mode #recipe-modal {
 
 h1 {
     text-align: center;
-    margin-bottom: 2.5rem;
     color: var(--accent);
-    font-size: 2.3rem;
-    font-style: italic;
+    margin: 0;
 }
 
 .site-title {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    gap: 0.06em;
     position: relative;
-    color: var(--accent);
+    display: block;
+    width: 100%;
+    margin: 0 0 2.25rem;
+    font-size: clamp(2.2rem, 2.4vw + 1.1rem, 3.2rem);
+    font-weight: 700;
+    font-style: italic;
+    letter-spacing: 0.02em;
     text-shadow: 0 2px 0 rgba(0, 0, 0, 0.06);
-    animation: titleGlow 5.2s ease-in-out infinite;
 }
 
-.site-title::after {
-    content: "";
-    position: absolute;
-    left: 50%;
-    bottom: -0.45rem;
-    width: 62%;
-    height: 6px;
-    transform: translateX(-50%);
-    background: linear-gradient(90deg, transparent, var(--accent), transparent);
-    opacity: 0.35;
-    filter: blur(6px);
-    animation: titleSteam 4.2s ease-in-out infinite;
-    pointer-events: none;
-}
-
-.site-title .title-char,
-.site-title .title-space {
-    display: inline-block;
-}
-
-.site-title .title-char {
-    animation: titleLift 2.6s ease-in-out infinite;
-    animation-delay: calc(var(--char-index) * 70ms);
-}
-
-@keyframes titleGlow {
-    0% { text-shadow: 0 2px 0 rgba(0, 0, 0, 0.06); }
-    50% { text-shadow: 0 6px 16px rgba(179,139,109,0.35); }
-    100% { text-shadow: 0 2px 0 rgba(0, 0, 0, 0.06); }
-}
-
-@keyframes titleLift {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-6px); }
-}
-
-@keyframes titleSteam {
-    0% { transform: translateX(-50%) scaleX(0.85); opacity: 0.18; }
-    50% { transform: translateX(-50%) scaleX(1.05); opacity: 0.4; }
-    100% { transform: translateX(-50%) scaleX(0.9); opacity: 0.22; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-    .site-title,
-    .site-title::after,
-    .site-title .title-char {
-        animation: none !important;
-    }
-}
 
 /* Sticky Controls Bar (Search + Categories) */
 .controls-bar {
@@ -258,6 +207,13 @@ body.dark-mode .theme-toggle .moon-icon {
 
 /* Recipe Card */
 .recipe-card {
+    appearance: none;
+    border: none;
+    padding: 0;
+    width: 100%;
+    text-align: left;
+    color: inherit;
+    font: inherit;
     background: var(--bg-secondary);
     border-radius: 10px;
     overflow: hidden;
@@ -265,6 +221,11 @@ body.dark-mode .theme-toggle .moon-icon {
     transition: all 0.3s;
     cursor: pointer;
     animation: fadeIn 0.5s ease-in;
+}
+
+.recipe-card:focus-visible {
+    outline: 3px solid color-mix(in oklab, var(--accent) 70%, white);
+    outline-offset: 3px;
 }
 
 @keyframes fadeIn {
