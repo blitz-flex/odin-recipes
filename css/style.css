@@ -40,8 +40,32 @@ body {
     transition: background 0.3s, color 0.3s;
 }
 
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
 body.print-mode #recipe-modal {
     display: block;
+}
+
+/* Print: hide social share buttons */
+body.print-mode .share-actions,
+body.print-mode .share-icon-btn {
+    display: none !important;
+}
+
+@media print {
+    .share-actions,
+    .share-icon-btn {
+        display: none !important;
+    }
 }
 
 h1 {
@@ -203,6 +227,58 @@ body.dark-mode .theme-toggle .moon-icon {
     max-width: 1200px;
     margin: 0 auto;
     padding: 1rem;
+}
+
+/* Loading Skeleton Cards */
+.skeleton-card {
+    position: relative;
+    pointer-events: none;
+}
+
+.skeleton-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        110deg,
+        color-mix(in oklab, var(--bg-secondary) 92%, var(--text-primary)) 8%,
+        color-mix(in oklab, var(--bg-secondary) 86%, var(--text-primary)) 18%,
+        color-mix(in oklab, var(--bg-secondary) 92%, var(--text-primary)) 33%
+    );
+    background-size: 220% 100%;
+    animation: shimmer 1.25s linear infinite;
+    opacity: 0.55;
+}
+
+.skeleton-card .recipe-image,
+.skeleton-card .recipe-info {
+    position: relative;
+    z-index: 1;
+}
+
+.skeleton-card .recipe-image {
+    background: color-mix(in oklab, var(--bg-secondary) 82%, var(--text-primary));
+}
+
+.skeleton-line {
+    height: 12px;
+    border-radius: 999px;
+    background: color-mix(in oklab, var(--bg-secondary) 78%, var(--text-primary));
+}
+
+.skeleton-line.title {
+    height: 16px;
+    width: 78%;
+    margin: 0 0 0.7rem;
+}
+
+.skeleton-line.meta {
+    width: 52%;
+}
+
+@keyframes shimmer {
+    0% { background-position: 100% 0; }
+    100% { background-position: -100% 0; }
 }
 
 /* Recipe Card */
