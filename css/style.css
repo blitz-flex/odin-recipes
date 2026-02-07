@@ -55,6 +55,19 @@ body.print-mode #recipe-modal {
     display: block;
 }
 
+/* Print: hide social share buttons */
+body.print-mode .share-actions,
+body.print-mode .share-icon-btn {
+    display: none !important;
+}
+
+@media print {
+    .share-actions,
+    .share-icon-btn {
+        display: none !important;
+    }
+}
+
 h1 {
     text-align: center;
     color: var(--accent);
