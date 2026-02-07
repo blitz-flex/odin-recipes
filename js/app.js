@@ -73,23 +73,6 @@ function setupStickyControlsBar() {
     }, { passive: true });
 }
 
-function setupTitleAnimation() {
-    const title = document.querySelector('.site-title');
-    if(!title) return;
-
-    const text = title.textContent;
-    if(!text) return;
-
-    title.setAttribute('aria-label', text);
-    const chars = Array.from(text);
-    title.innerHTML = chars.map((char, index) => {
-        if(char === ' ') {
-            return `<span class="title-space" aria-hidden="true">&nbsp;</span>`;
-        }
-        return `<span class="title-char" style="--char-index:${index}" aria-hidden="true">${char}</span>`;
-    }).join('');
-}
-
 // ============================================
 // API Configuration
 // ============================================
@@ -248,7 +231,7 @@ function recipeCardHtml(recipe) {
     const meta = formatRecipeMeta(recipe);
 
     return `
-        <div class="recipe-card" onclick="showRecipe('${recipe.idMeal}')">
+        <button type="button" class="recipe-card" data-recipe-id="${recipe.idMeal}">
             <img src="${recipe.strMealThumb}" 
                  alt="${recipe.strMeal}" 
                  class="recipe-image"
@@ -257,7 +240,7 @@ function recipeCardHtml(recipe) {
                 <h3 class="recipe-title">${recipe.strMeal}</h3>
                 ${meta ? `<p class="recipe-meta">${meta}</p>` : ''}
             </div>
-        </div>
+        </button>
     `;
 }
 
@@ -410,6 +393,21 @@ async function showRecipe(id) {
 // ============================================
 // Setup Functions
 // ============================================
+
+function setupRecipeGridInteractions() {
+    const container = document.getElementById('recipes-container');
+    if(!container) return;
+
+    container.addEventListener('click', (e) => {
+        const card = e.target.closest('.recipe-card');
+        if(!card) return;
+
+        const id = card.dataset.recipeId;
+        if(!id) return;
+
+        showRecipe(id);
+    });
+}
 
 function setupSearch() {
     const searchInput = document.getElementById('search-input');
@@ -652,7 +650,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     
     setupDarkMode();
     setupStickyControlsBar();
-    setupTitleAnimation();
+    setupRecipeGridInteractions();
     
     setActiveCategory('all');
     const recipes = await getRandomRecipes(PAGE_SIZE);
