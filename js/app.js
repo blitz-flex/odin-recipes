@@ -264,11 +264,19 @@ function showLoading() {
         loadMoreBtn.style.display = 'none';
     }
 
-    container.innerHTML = `
-        <div style="grid-column: 1/-1; text-align: center; padding: 3rem;">
-            <p style="font-size: 1.2rem; color: #b38b6d;">🍳 Loading delicious recipes...</p>
+    if(container) {
+        container.setAttribute('aria-busy', 'true');
+    }
+
+    container.innerHTML = Array.from({ length: PAGE_SIZE }).map(() => `
+        <div class="recipe-card skeleton-card" aria-hidden="true">
+            <div class="recipe-image"></div>
+            <div class="recipe-info">
+                <div class="skeleton-line title"></div>
+                <div class="skeleton-line meta"></div>
+            </div>
         </div>
-    `;
+    `).join('');
 }
 
 // ============================================
@@ -294,6 +302,7 @@ function renderRecipes(recipes, isInitialLoad = false) {
     displayedRecipes = recipes.slice(0, PAGE_SIZE);
 
     container.innerHTML = displayedRecipes.map(recipeCardHtml).join('');
+    container?.setAttribute('aria-busy', 'false');
     updateLoadMoreVisibility();
     
     console.log('🍴 Rendered', displayedRecipes.length, 'of', allRecipes.length, 'recipes');
@@ -615,22 +624,37 @@ function setupLoadMore() {
         const previousText = loadMoreBtn.textContent;
         loadMoreBtn.textContent = 'Loading...';
 
-        try {
-            const container = document.getElementById('recipes-container');
+        const container = document.getElementById('recipes-container');
+        const placeholderGroup = document.createElement('div');
+        placeholderGroup.className = 'skeleton-group';
+        placeholderGroup.innerHTML = Array.from({ length: PAGE_SIZE }).map(() => `
+            <div class="recipe-card skeleton-card" aria-hidden="true">
+                <div class="recipe-image"></div>
+                <div class="recipe-info">
+                    <div class="skeleton-line title"></div>
+                    <div class="skeleton-line meta"></div>
+                </div>
+            </div>
+        `).join('');
+        container?.appendChild(placeholderGroup);
 
+        try {
             if(currentMode === 'random') {
                 const newRecipes = await getRandomRecipes(PAGE_SIZE);
                 allRecipes = [...allRecipes, ...newRecipes];
                 displayedRecipes = [...displayedRecipes, ...newRecipes];
+                placeholderGroup.remove();
                 container.insertAdjacentHTML('beforeend', newRecipes.map(recipeCardHtml).join(''));
                 console.log(`✅ Loaded ${newRecipes.length} more recipes. Total:`, displayedRecipes.length);
             } else {
                 const nextRecipes = allRecipes.slice(displayedRecipes.length, displayedRecipes.length + PAGE_SIZE);
                 displayedRecipes = [...displayedRecipes, ...nextRecipes];
+                placeholderGroup.remove();
                 container.insertAdjacentHTML('beforeend', nextRecipes.map(recipeCardHtml).join(''));
                 console.log(`✅ Loaded ${nextRecipes.length} more recipes. Total:`, displayedRecipes.length);
             }
         } finally {
+            placeholderGroup.remove();
             loadMoreBtn.disabled = false;
             loadMoreBtn.textContent = previousText;
             updateLoadMoreVisibility();
