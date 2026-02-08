@@ -340,11 +340,24 @@ async function showRecipe(id) {
              alt="${recipe.strMeal}" 
              class="recipe-detail-image">
         
-        <div class="recipe-detail-content">
-            <h2 class="recipe-detail-title">${recipe.strMeal}</h2>
-            <p class="recipe-detail-meta">
-                <strong>${recipe.strCategory}</strong> • ${recipe.strArea}
-            </p>
+	        <div class="recipe-detail-content">
+	            <div class="recipe-title-row">
+	                <h2 class="recipe-detail-title">${recipe.strMeal}</h2>
+	                <button type="button"
+	                        class="favorite-btn"
+	                        data-action="toggle-favorite"
+	                        aria-label="Add to favorites"
+	                        aria-pressed="false"
+	                        title="Favorite">
+	                    <svg class="favorite-btn-svg" viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+	                        <path class="favorite-heart-fill" d="M12 21s-7.2-4.4-9.6-8.7C.6 8.8 2.3 5.8 5.5 5.2c1.9-.4 3.7.4 4.9 1.8 1.2-1.4 3-2.2 4.9-1.8 3.2.6 4.9 3.6 3.1 7.1C19.2 16.6 12 21 12 21z" fill="currentColor"/>
+	                        <path class="favorite-heart-outline" d="M12 21s-7.2-4.4-9.6-8.7C.6 8.8 2.3 5.8 5.5 5.2c1.9-.4 3.7.4 4.9 1.8 1.2-1.4 3-2.2 4.9-1.8 3.2.6 4.9 3.6 3.1 7.1C19.2 16.6 12 21 12 21z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+	                    </svg>
+	                </button>
+	            </div>
+	            <p class="recipe-detail-meta">
+	                <strong>${recipe.strCategory}</strong> • ${recipe.strArea}
+	            </p>
             
             <div class="section">
                 <h3>📋 Ingredients</h3>
