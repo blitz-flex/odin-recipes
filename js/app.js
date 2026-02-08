@@ -313,6 +313,7 @@ async function showRecipe(id) {
     const details = document.getElementById('recipe-details');
     
     modal.style.display = 'block';
+    setRecipeInUrl(id);
     details.innerHTML = `
         <div style="text-align:center; padding:3rem;">
             <p style="font-size: 1.2rem; color: #b38b6d;">🍳 Loading recipe...</p>
@@ -491,12 +492,14 @@ function setupModal() {
     
     closeBtn.addEventListener('click', () => {
         modal.style.display = 'none';
+        clearRecipeFromUrl();
         console.log('❌ Modal closed');
     });
     
     window.addEventListener('click', (e) => {
         if(e.target === modal) {
             modal.style.display = 'none';
+            clearRecipeFromUrl();
             console.log('❌ Modal closed (outside click)');
         }
     });
@@ -504,6 +507,7 @@ function setupModal() {
     document.addEventListener('keydown', (e) => {
         if(e.key === 'Escape' && modal.style.display === 'block') {
             modal.style.display = 'none';
+            clearRecipeFromUrl();
             console.log('❌ Modal closed (ESC key)');
         }
     });
@@ -511,8 +515,35 @@ function setupModal() {
     console.log('✅ Modal functionality ready');
 }
 
+function setRecipeInUrl(id) {
+    if(!id) return;
+
+    const url = new URL(window.location.href);
+    url.searchParams.set('recipe', id);
+    history.replaceState(null, '', url.toString());
+}
+
+function clearRecipeFromUrl() {
+    const url = new URL(window.location.href);
+    if(!url.searchParams.has('recipe')) return;
+    url.searchParams.delete('recipe');
+    history.replaceState(null, '', url.toString());
+}
+
+function getRecipeFromUrl() {
+    const url = new URL(window.location.href);
+    return url.searchParams.get('recipe');
+}
+
 function getShareUrl() {
-    return window.location.href.split('#')[0];
+    const url = new URL(window.location.href);
+    url.hash = '';
+
+    if(currentRecipeForShare?.idMeal) {
+        url.searchParams.set('recipe', currentRecipeForShare.idMeal);
+    }
+
+    return url.toString();
 }
 
 function getShareText(recipe) {
@@ -690,4 +721,9 @@ window.addEventListener('DOMContentLoaded', async () => {
     setupShareButtons();
     setupPrintRecipe();
     setupLoadMore();
+
+    const recipeFromUrl = getRecipeFromUrl();
+    if(recipeFromUrl) {
+        await showRecipe(recipeFromUrl);
+    }
 });
