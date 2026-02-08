@@ -352,30 +352,32 @@ async function showRecipe(id) {
                 </ul>
             </div>
             
-            <div class="section">
-                <h3>👨‍🍳 Instructions</h3>
-                <div class="instructions">${recipe.strInstructions}</div>
-            </div>
-            
-	            <div class="recipe-actions" aria-label="Recipe actions">
+	            <div class="section">
+	                <h3>👨‍🍳 Instructions</h3>
+	                <div class="instructions">${recipe.strInstructions}</div>
 	                ${recipe.strYoutube ? `
-		                    <a href="${recipe.strYoutube}" 
-		                       target="_blank" 
-		                       rel="noopener noreferrer"
-		                       data-print-url="${formatPrintUrl(recipe.strYoutube)}"
-		                       class="video-link">
-		                        <svg class="video-link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-		                            <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm-2.2 6.9 7 3.9-7 3.9V8.9z"/>
-		                        </svg>
-		                        <span>Watch Video Tutorial</span>
-		                    </a>
-		                ` : ''}
-	                <div class="actions-right" aria-label="Recipe actions right">
-	                    <div class="share-actions" aria-label="Share recipe">
-	                        <button type="button" class="share-icon-btn" data-action="share-facebook" aria-label="Share on Facebook" title="Facebook">
-	                            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-	                                <path d="M22 12a10 10 0 1 0-11.6 9.9v-7H8v-3h2.4V9.8c0-2.4 1.4-3.8 3.6-3.8 1 0 2.1.2 2.1.2v2.3h-1.2c-1.2 0-1.6.8-1.6 1.5V12H16l-.4 3h-2.2v7A10 10 0 0 0 22 12z"/>
-	                            </svg>
+	                        <div class="instructions-footer">
+	                            <a href="${recipe.strYoutube}"
+	                               target="_blank"
+	                               rel="noopener noreferrer"
+	                               data-print-url="${formatPrintUrl(recipe.strYoutube)}"
+	                               class="video-link">
+	                                <svg class="video-link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+	                                    <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm-2.2 6.9 7 3.9-7 3.9V8.9z"/>
+	                                </svg>
+	                                <span>Watch Video Tutorial</span>
+	                            </a>
+	                        </div>
+	                    ` : ''}
+	            </div>
+	            
+		            <div class="recipe-actions" aria-label="Recipe actions">
+		                <div class="actions-right" aria-label="Recipe actions right">
+		                    <div class="share-actions" aria-label="Share recipe">
+		                        <button type="button" class="share-icon-btn" data-action="share-facebook" aria-label="Share on Facebook" title="Facebook">
+		                            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+		                                <path d="M22 12a10 10 0 1 0-11.6 9.9v-7H8v-3h2.4V9.8c0-2.4 1.4-3.8 3.6-3.8 1 0 2.1.2 2.1.2v2.3h-1.2c-1.2 0-1.6.8-1.6 1.5V12H16l-.4 3h-2.2v7A10 10 0 0 0 22 12z"/>
+		                            </svg>
 	                        </button>
 	                        <button type="button" class="share-icon-btn" data-action="share-instagram" aria-label="Share to Instagram" title="Instagram">
 	                            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">

@@ -566,6 +566,12 @@ body.dark-mode .theme-toggle .moon-icon {
     font-size: 1rem;
 }
 
+.instructions-footer {
+    display: flex;
+    justify-content: flex-start;
+    margin-top: 1.2rem;
+}
+
 .video-link {
     margin-right: auto;
     flex: 0 1 auto;
