@@ -42,6 +42,41 @@ function setFavoriteButtonState(button, isFavorite) {
     button.setAttribute('title', isFavorite ? 'Unfavorite' : 'Favorite');
 }
 
+async function refreshFavoritesUI() {
+    const container = document.getElementById('favorites-container');
+    const emptyEl = document.getElementById('favorites-empty');
+    const countEl = document.getElementById('favorites-count');
+
+    if(!container || !emptyEl || !countEl) return;
+
+    const favoriteIds = Array.from(readFavoriteIds());
+    countEl.textContent = String(favoriteIds.length);
+
+    if(favoriteIds.length === 0) {
+        emptyEl.style.display = 'block';
+        container.innerHTML = '';
+        return;
+    }
+
+    emptyEl.style.display = 'none';
+    container.innerHTML = favoriteIds.slice(0, 6).map(() => `
+        <div class="recipe-card skeleton-card" aria-hidden="true">
+            <div class="recipe-image"></div>
+            <div class="recipe-info">
+                <div class="skeleton-line title"></div>
+                <div class="skeleton-line meta"></div>
+            </div>
+        </div>
+    `).join('');
+
+    const recipes = (await Promise.all(
+        favoriteIds.map(async (id) => getRecipeDetails(id))
+    )).filter(Boolean);
+
+    countEl.textContent = String(recipes.length);
+    container.innerHTML = recipes.map(recipeCardHtml).join('');
+}
+
 function setupDarkMode() {
     const toggleBtn = document.getElementById('theme-toggle');
     const savedTheme = localStorage.getItem('theme');
@@ -469,6 +504,21 @@ function setupRecipeGridInteractions() {
     });
 }
 
+function setupFavoritesGridInteractions() {
+    const container = document.getElementById('favorites-container');
+    if(!container) return;
+
+    container.addEventListener('click', (e) => {
+        const card = e.target.closest('.recipe-card');
+        if(!card) return;
+
+        const id = card.dataset.recipeId;
+        if(!id) return;
+
+        showRecipe(id);
+    });
+}
+
 function setupSearch() {
     const searchInput = document.getElementById('search-input');
     let searchTimeout;
@@ -686,6 +736,7 @@ function setupFavorites() {
 
         writeFavoriteIds(favorites);
         setFavoriteButtonState(btn, shouldFavorite);
+        refreshFavoritesUI();
     });
 
     console.log('✅ Favorites ready');
@@ -786,6 +837,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     setupDarkMode();
     setupStickyControlsBar();
     setupRecipeGridInteractions();
+    setupFavoritesGridInteractions();
     
     setActiveCategory('all');
     const recipes = await getRandomRecipes(PAGE_SIZE);
@@ -800,6 +852,8 @@ window.addEventListener('DOMContentLoaded', async () => {
     setupShareButtons();
     setupPrintRecipe();
     setupLoadMore();
+
+    refreshFavoritesUI();
 
     const recipeFromUrl = getRecipeFromUrl();
     if(recipeFromUrl) {
