@@ -1,26 +1,26 @@
 # Odin Recipes
 
-A simple recipe website built with HTML as part of The Odin Project curriculum.
+A modern recipe explorer built with vanilla HTML/CSS/JS. It pulls data from TheMealDB, supports search and category filtering, and includes favorites, theming, and a polished recipe modal designed for an intuitive browsing experience.
 
-# Overview
+## Features
+- Search, categories, and random discovery
+- Favorites with persistence (localStorage)
+- Recipe modal with share + print
+- Responsive layout and sticky navigation
 
-This project demonstrates fundamental HTML skills through a collection of recipe pages with basic navigation and styling structure.
-
-
-# Skills Demonstrated
-
-- Semantic HTML structure
-- Links and navigation
-- Lists and text formatting
-- Image embedding
-- Multi-page organization
-
-# Purpose
-
-Built as a learning exercise to practice HTML fundamentals and basic web development workflow.
-
-# Demo
-
-[View Live Project](https://fixings.netlify.app/)
+## Tech Stack
+- HTML5
+- CSS3 (custom properties, responsive layout, motion)
+- Vanilla JavaScript (DOM, fetch, localStorage)
 
 
+
+## Data Source
+Recipes are fetched from the TheMealDB public API.
+
+## Configuration
+- `PAGE_SIZE` in `odin-recipes/js/app.js` controls how many recipes load per batch.
+
+##  Live Site
+
+ [🍲 Odin Recipes Live ](https://fixings.netlify.app/)
