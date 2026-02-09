@@ -870,12 +870,31 @@ body.favorites-only .search-container {
     .search-container {
         padding: 0;
         margin-bottom: 0.75rem;
+        flex-wrap: nowrap;
+        gap: 0.6rem;
+    }
+
+    #search-input {
+        flex: 1 1 auto;
+        min-width: 140px;
+        padding: 0.85rem 1.1rem;
+        font-size: 0.95rem;
     }
 
     .theme-toggle {
         width: 42px;
         height: 42px;
         font-size: 1.2rem;
+    }
+
+    .favorites-toggle {
+        width: 42px;
+        height: 42px;
+    }
+
+    .favorites-toggle-icon {
+        width: 21px;
+        height: 21px;
     }
     
     .controls-bar {
@@ -908,6 +927,18 @@ body.favorites-only .search-container {
         grid-template-columns: 1fr;
         gap: 1.5rem;
         padding: 0;
+    }
+
+    .card-favorite {
+        width: 28px;
+        height: 28px;
+        top: 10px;
+        right: 10px;
+    }
+
+    .card-favorite svg {
+        width: 14px;
+        height: 14px;
     }
     
     .modal {
