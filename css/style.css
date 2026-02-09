@@ -455,8 +455,21 @@ body.dark-mode .theme-toggle .moon-icon {
     display: block;
 }
 
+.favorite-heart-fill {
+    opacity: 0;
+    transform-origin: center;
+    transform: scale(0.9);
+    transition: opacity 0.18s ease, transform 0.18s ease;
+}
+
+.favorite-heart-outline {
+    opacity: 1;
+    transition: opacity 0.18s ease;
+}
+
 .favorite-btn.is-favorite .favorite-heart-fill {
     opacity: 1;
+    transform: scale(1.05);
 }
 
 .favorite-btn.is-favorite .favorite-heart-outline {
