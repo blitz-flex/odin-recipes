@@ -19,6 +19,14 @@
                 <span class="sun-icon">🔆</span>
                 <span class="moon-icon">🌙</span>
             </button>
+            <button id="favorites-toggle"
+                    class="favorites-toggle"
+                    type="button"
+                    aria-label="Jump to favorites"
+                    title="Favorites">
+                <span class="favorites-toggle-icon" aria-hidden="true">❤</span>
+                <span id="favorites-btn-count" class="favorites-btn-count" aria-label="Favorites count">0</span>
+            </button>
         </div>
         <div class="categories">
             <button class="category-btn" data-category="Dessert">🍰 Dessert</button>
@@ -32,7 +40,7 @@
         </div>
     </div>
 
-    <section class="favorites-section" aria-label="Favorites">
+    <section id="favorites-section" class="favorites-section" aria-label="Favorites">
         <div class="favorites-header">
             <h2 class="favorites-title">❤️ Favorites</h2>
             <span id="favorites-count" class="favorites-count" aria-label="Favorites count">0</span>

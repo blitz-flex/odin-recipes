@@ -46,11 +46,16 @@ async function refreshFavoritesUI() {
     const container = document.getElementById('favorites-container');
     const emptyEl = document.getElementById('favorites-empty');
     const countEl = document.getElementById('favorites-count');
+    const btnCountEl = document.getElementById('favorites-btn-count');
 
     if(!container || !emptyEl || !countEl) return;
 
     const favoriteIds = Array.from(readFavoriteIds());
     countEl.textContent = String(favoriteIds.length);
+    if(btnCountEl) {
+        btnCountEl.textContent = String(favoriteIds.length);
+        btnCountEl.classList.toggle('is-hidden', favoriteIds.length === 0);
+    }
 
     if(favoriteIds.length === 0) {
         emptyEl.style.display = 'block';
@@ -74,6 +79,10 @@ async function refreshFavoritesUI() {
     )).filter(Boolean);
 
     countEl.textContent = String(recipes.length);
+    if(btnCountEl) {
+        btnCountEl.textContent = String(recipes.length);
+        btnCountEl.classList.toggle('is-hidden', recipes.length === 0);
+    }
     container.innerHTML = recipes.map(recipeCardHtml).join('');
 }
 
@@ -519,6 +528,20 @@ function setupFavoritesGridInteractions() {
     });
 }
 
+function setupFavoritesToggle() {
+    const btn = document.getElementById('favorites-toggle');
+    const section = document.getElementById('favorites-section');
+    if(!btn || !section) return;
+
+    const prefersReducedMotion = () =>
+        window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        section.scrollIntoView({ behavior: prefersReducedMotion() ? 'auto' : 'smooth', block: 'start' });
+    });
+}
+
 function setupSearch() {
     const searchInput = document.getElementById('search-input');
     let searchTimeout;
@@ -838,6 +861,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     setupStickyControlsBar();
     setupRecipeGridInteractions();
     setupFavoritesGridInteractions();
+    setupFavoritesToggle();
     
     setActiveCategory('all');
     const recipes = await getRandomRecipes(PAGE_SIZE);
