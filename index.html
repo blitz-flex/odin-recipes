@@ -23,9 +23,9 @@
                     class="favorites-toggle"
                     type="button"
                     aria-label="Jump to favorites"
+                    aria-pressed="false"
                     title="Favorites">
                 <span class="favorites-toggle-icon" aria-hidden="true">❤</span>
-                <span id="favorites-btn-count" class="favorites-btn-count" aria-label="Favorites count">0</span>
             </button>
         </div>
         <div class="categories">
@@ -41,10 +41,6 @@
     </div>
 
     <section id="favorites-section" class="favorites-section" aria-label="Favorites">
-        <div class="favorites-header">
-            <h2 class="favorites-title">❤️ Favorites</h2>
-            <span id="favorites-count" class="favorites-count" aria-label="Favorites count">0</span>
-        </div>
         <p id="favorites-empty" class="favorites-empty">No favorites yet — open a recipe and tap the heart.</p>
         <div id="favorites-container" class="recipes-grid favorites-grid" aria-label="Favorite recipes"></div>
     </section>

@@ -45,17 +45,9 @@ function setFavoriteButtonState(button, isFavorite) {
 async function refreshFavoritesUI() {
     const container = document.getElementById('favorites-container');
     const emptyEl = document.getElementById('favorites-empty');
-    const countEl = document.getElementById('favorites-count');
-    const btnCountEl = document.getElementById('favorites-btn-count');
-
-    if(!container || !emptyEl || !countEl) return;
+    if(!container || !emptyEl) return;
 
     const favoriteIds = Array.from(readFavoriteIds());
-    countEl.textContent = String(favoriteIds.length);
-    if(btnCountEl) {
-        btnCountEl.textContent = String(favoriteIds.length);
-        btnCountEl.classList.toggle('is-hidden', favoriteIds.length === 0);
-    }
 
     if(favoriteIds.length === 0) {
         emptyEl.style.display = 'block';
@@ -78,11 +70,6 @@ async function refreshFavoritesUI() {
         favoriteIds.map(async (id) => getRecipeDetails(id))
     )).filter(Boolean);
 
-    countEl.textContent = String(recipes.length);
-    if(btnCountEl) {
-        btnCountEl.textContent = String(recipes.length);
-        btnCountEl.classList.toggle('is-hidden', recipes.length === 0);
-    }
     container.innerHTML = recipes.map(recipeCardHtml).join('');
 }
 
@@ -538,6 +525,13 @@ function setupFavoritesToggle() {
 
     btn.addEventListener('click', (e) => {
         e.preventDefault();
+        const willEnable = !document.body.classList.contains('favorites-only');
+        document.body.classList.toggle('favorites-only', willEnable);
+        btn.setAttribute('aria-pressed', willEnable ? 'true' : 'false');
+        btn.setAttribute('aria-label', willEnable ? 'Show all recipes' : 'Show favorites only');
+        btn.setAttribute('title', willEnable ? 'Back to all recipes' : 'Favorites');
+
+        refreshFavoritesUI();
         section.scrollIntoView({ behavior: prefersReducedMotion() ? 'auto' : 'smooth', block: 'start' });
     });
 }
