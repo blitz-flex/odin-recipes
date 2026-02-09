@@ -11,6 +11,36 @@ let currentCategory = 'all';
 let currentQuery = '';
 const ORIGINAL_TITLE = document.title;
 let currentRecipeForShare = null;
+const FAVORITES_STORAGE_KEY = 'odin_recipes_favorites_v1';
+
+function readFavoriteIds() {
+    try {
+        const raw = localStorage.getItem(FAVORITES_STORAGE_KEY);
+        if(!raw) return new Set();
+        const parsed = JSON.parse(raw);
+        if(!Array.isArray(parsed)) return new Set();
+        return new Set(parsed.map(String));
+    } catch {
+        return new Set();
+    }
+}
+
+function writeFavoriteIds(favoriteIds) {
+    try {
+        localStorage.setItem(FAVORITES_STORAGE_KEY, JSON.stringify(Array.from(favoriteIds)));
+        return true;
+    } catch {
+        return false;
+    }
+}
+
+function setFavoriteButtonState(button, isFavorite) {
+    if(!button) return;
+    button.classList.toggle('is-favorite', isFavorite);
+    button.setAttribute('aria-pressed', isFavorite ? 'true' : 'false');
+    button.setAttribute('aria-label', isFavorite ? 'Remove from favorites' : 'Add to favorites');
+    button.setAttribute('title', isFavorite ? 'Unfavorite' : 'Favorite');
+}
 
 function setupDarkMode() {
     const toggleBtn = document.getElementById('theme-toggle');
@@ -343,12 +373,13 @@ async function showRecipe(id) {
 	        <div class="recipe-detail-content">
 	            <div class="recipe-title-row">
 	                <h2 class="recipe-detail-title">${recipe.strMeal}</h2>
-	                <button type="button"
-	                        class="favorite-btn"
-	                        data-action="toggle-favorite"
-	                        aria-label="Add to favorites"
-	                        aria-pressed="false"
-	                        title="Favorite">
+		                <button type="button"
+		                        class="favorite-btn"
+		                        data-recipe-id="${recipe.idMeal}"
+		                        data-action="toggle-favorite"
+		                        aria-label="Add to favorites"
+		                        aria-pressed="false"
+		                        title="Favorite">
 	                    <svg class="favorite-btn-svg" viewBox="0 0 24 24" focusable="false" aria-hidden="true">
 	                        <path class="favorite-heart-fill" d="M12 21s-7.2-4.4-9.6-8.7C.6 8.8 2.3 5.8 5.5 5.2c1.9-.4 3.7.4 4.9 1.8 1.2-1.4 3-2.2 4.9-1.8 3.2.6 4.9 3.6 3.1 7.1C19.2 16.6 12 21 12 21z" fill="currentColor"/>
 	                        <path class="favorite-heart-outline" d="M12 21s-7.2-4.4-9.6-8.7C.6 8.8 2.3 5.8 5.5 5.2c1.9-.4 3.7.4 4.9 1.8 1.2-1.4 3-2.2 4.9-1.8 3.2.6 4.9 3.6 3.1 7.1C19.2 16.6 12 21 12 21z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -410,8 +441,12 @@ async function showRecipe(id) {
 		                </div>
 		            </div>
 		        </div>
-		    `;
-    
+			    `;
+
+    const favoriteBtn = details.querySelector('[data-action="toggle-favorite"]');
+    const favorites = readFavoriteIds();
+    setFavoriteButtonState(favoriteBtn, favorites.has(String(recipe.idMeal)));
+	    
     console.log('✅ Recipe details displayed');
 }
 
@@ -626,6 +661,36 @@ function setupShareButtons() {
     console.log('✅ Share buttons ready');
 }
 
+function setupFavorites() {
+    const details = document.getElementById('recipe-details');
+    if(!details) return;
+
+    details.addEventListener('click', (e) => {
+        const btn = e.target.closest('[data-action="toggle-favorite"]');
+        if(!btn) return;
+
+        e.preventDefault();
+
+        const id = btn.dataset.recipeId || currentRecipeForShare?.idMeal;
+        if(!id) return;
+
+        const favorites = readFavoriteIds();
+        const key = String(id);
+        const shouldFavorite = !favorites.has(key);
+
+        if(shouldFavorite) {
+            favorites.add(key);
+        } else {
+            favorites.delete(key);
+        }
+
+        writeFavoriteIds(favorites);
+        setFavoriteButtonState(btn, shouldFavorite);
+    });
+
+    console.log('✅ Favorites ready');
+}
+
 function setupPrintRecipe() {
     const details = document.getElementById('recipe-details');
     if(!details) return;
@@ -731,6 +796,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     setupSearch();
     setupCategories();
     setupModal();
+    setupFavorites();
     setupShareButtons();
     setupPrintRecipe();
     setupLoadMore();
