@@ -380,9 +380,12 @@ function formatPrintUrl(rawUrl) {
 
 function recipeCardHtml(recipe) {
     const meta = formatRecipeMeta(recipe);
+    const favorites = readFavoriteIds();
+    const isFavorite = favorites.has(String(recipe.idMeal));
 
     return `
-        <button type="button" class="recipe-card" data-recipe-id="${recipe.idMeal}">
+        <button type="button" class="recipe-card ${isFavorite ? 'is-favorite' : ''}" data-recipe-id="${recipe.idMeal}">
+            ${isFavorite ? favoriteBadgeHtml() : ''}
             <img src="${recipe.strMealThumb}" 
                  alt="${recipe.strMeal}" 
                  class="recipe-image"
@@ -392,6 +395,16 @@ function recipeCardHtml(recipe) {
                 ${meta ? `<p class="recipe-meta">${meta}</p>` : ''}
             </div>
         </button>
+    `;
+}
+
+function favoriteBadgeHtml() {
+    return `
+        <span class="card-favorite" aria-hidden="true">
+            <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/>
+            </svg>
+        </span>
     `;
 }
 
@@ -620,23 +633,22 @@ function setupFavoritesToggle() {
 
     btn.addEventListener('click', async (e) => {
         e.preventDefault();
-        const willEnable = !isFavoritesOnlyMode();
-
-        if(willEnable) {
-            favoritesOnlySnapshot = snapshotCurrentView();
-            document.body.classList.add('favorites-only');
-            btn.setAttribute('aria-pressed', 'true');
-            btn.setAttribute('aria-label', 'Show all recipes');
-            btn.setAttribute('title', 'Back to all recipes');
+        if(isFavoritesOnlyMode()) {
             await renderFavoritesOnlyView();
-        } else {
-            document.body.classList.remove('favorites-only');
-            btn.setAttribute('aria-pressed', 'false');
-            btn.setAttribute('aria-label', 'Show favorites only');
-            btn.setAttribute('title', 'Favorites');
-            restoreSnapshot(favoritesOnlySnapshot);
-            favoritesOnlySnapshot = null;
+            return;
         }
+
+        favoritesOnlySnapshot = snapshotCurrentView();
+        document.body.classList.add('favorites-only');
+        btn.setAttribute('aria-pressed', 'true');
+        btn.setAttribute('aria-label', 'Favorites only');
+        btn.setAttribute('title', 'Favorites');
+        currentCategory = 'all';
+        currentQuery = '';
+        setActiveCategory('all');
+        const searchInput = document.getElementById('search-input');
+        if(searchInput) searchInput.value = '';
+        await renderFavoritesOnlyView();
 
         // Keep scroll position unchanged on toggle.
     });
@@ -698,7 +710,7 @@ function setupCategories() {
 
             const favoritesToggle = document.getElementById('favorites-toggle');
             favoritesToggle?.setAttribute('aria-pressed', 'false');
-            favoritesToggle?.setAttribute('aria-label', 'Show favorites only');
+            favoritesToggle?.setAttribute('aria-label', 'Favorites only');
             favoritesToggle?.setAttribute('title', 'Favorites');
         }
 
@@ -720,7 +732,10 @@ function setupCategories() {
             recipes = await filterByCategory(category);
         }
 
-        setTimeout(() => renderRecipes(recipes), 200);
+        setTimeout(() => {
+            renderRecipes(recipes);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }, 200);
     });
     
     console.log('✅ Category filters ready');
@@ -878,6 +893,17 @@ function setupFavorites() {
 
         writeFavoriteIds(favorites);
         setFavoriteButtonState(btn, shouldFavorite);
+        const cards = document.querySelectorAll(`.recipe-card[data-recipe-id="${key}"]`);
+        cards.forEach((card) => {
+            card.classList.toggle('is-favorite', shouldFavorite);
+            const existingBadge = card.querySelector('.card-favorite');
+            if(shouldFavorite && !existingBadge) {
+                card.insertAdjacentHTML('afterbegin', favoriteBadgeHtml());
+            }
+            if(!shouldFavorite && existingBadge) {
+                existingBadge.remove();
+            }
+        });
         favoriteRecipesCache = [];
         refreshFavoritesUI();
     });
@@ -930,36 +956,42 @@ function setupLoadMore() {
         loadMoreBtn.textContent = 'Loading...';
 
         const container = document.getElementById('recipes-container');
-        const placeholderGroup = document.createElement('div');
-        placeholderGroup.className = 'skeleton-group';
-        placeholderGroup.innerHTML = Array.from({ length: PAGE_SIZE }).map(() => `
-            <div class="recipe-card skeleton-card" aria-hidden="true">
-                <div class="recipe-image"></div>
-                <div class="recipe-info">
-                    <div class="skeleton-line title"></div>
-                    <div class="skeleton-line meta"></div>
-                </div>
-            </div>
-        `).join('');
-        container?.appendChild(placeholderGroup);
+        const placeholderCards = [];
+        if(container) {
+            for(let i = 0; i < PAGE_SIZE; i++) {
+                const card = document.createElement('div');
+                card.className = 'recipe-card skeleton-card';
+                card.setAttribute('aria-hidden', 'true');
+                card.setAttribute('data-placeholder', 'true');
+                card.innerHTML = `
+                    <div class="recipe-image"></div>
+                    <div class="recipe-info">
+                        <div class="skeleton-line title"></div>
+                        <div class="skeleton-line meta"></div>
+                    </div>
+                `;
+                placeholderCards.push(card);
+                container.appendChild(card);
+            }
+        }
 
         try {
             if(currentMode === 'random') {
                 const newRecipes = await getRandomRecipes(PAGE_SIZE);
                 allRecipes = [...allRecipes, ...newRecipes];
                 displayedRecipes = [...displayedRecipes, ...newRecipes];
-                placeholderGroup.remove();
+                placeholderCards.forEach((el) => el.remove());
                 container.insertAdjacentHTML('beforeend', newRecipes.map(recipeCardHtml).join(''));
                 console.log(`✅ Loaded ${newRecipes.length} more recipes. Total:`, displayedRecipes.length);
             } else {
                 const nextRecipes = allRecipes.slice(displayedRecipes.length, displayedRecipes.length + PAGE_SIZE);
                 displayedRecipes = [...displayedRecipes, ...nextRecipes];
-                placeholderGroup.remove();
+                placeholderCards.forEach((el) => el.remove());
                 container.insertAdjacentHTML('beforeend', nextRecipes.map(recipeCardHtml).join(''));
                 console.log(`✅ Loaded ${nextRecipes.length} more recipes. Total:`, displayedRecipes.length);
             }
         } finally {
-            placeholderGroup.remove();
+            placeholderCards.forEach((el) => el.remove());
             loadMoreBtn.disabled = false;
             loadMoreBtn.textContent = previousText;
             updateLoadMoreVisibility();

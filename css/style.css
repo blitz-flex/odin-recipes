@@ -145,17 +145,17 @@ h1 {
     position: relative;
     font-size: 1.25rem;
     transition: all 0.3s;
-    box-shadow: 0 4px 15px var(--shadow);
+    box-shadow: 0 6px 18px var(--shadow);
     flex: 0 0 auto;
 }
 
 .favorites-toggle:hover {
-    transform: scale(1.1);
-    box-shadow: 0 6px 20px var(--shadow-hover);
+    transform: translateY(-1px) scale(1.08);
+    box-shadow: 0 10px 24px var(--shadow-hover);
 }
 
 .favorites-toggle:active {
-    transform: scale(0.95);
+    transform: scale(0.96);
 }
 
 .favorites-toggle:focus-visible {
@@ -164,8 +164,54 @@ h1 {
 }
 
 .favorites-toggle-icon {
-    line-height: 1;
-    color: #d05454;
+    width: 23px;
+    height: 23px;
+    display: block;
+    filter: drop-shadow(0 2px 6px rgba(208,84,84,0.22));
+}
+
+.favorites-toggle-icon .heart-fill {
+    fill: url(#favorite-heart-gradient);
+    opacity: 0;
+    transition: opacity 0.25s ease, transform 0.25s ease;
+    transform-origin: 50% 60%;
+}
+
+.favorites-toggle-icon .heart-stroke {
+    fill: none;
+    stroke: color-mix(in oklab, #d05454 65%, var(--text-primary));
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: stroke 0.25s ease, transform 0.25s ease;
+    transform-origin: 50% 60%;
+}
+
+.favorites-toggle:hover .heart-stroke {
+    stroke: var(--accent);
+    transform: scale(1.05);
+}
+
+.favorites-toggle[aria-pressed="true"] .heart-fill {
+    opacity: 1;
+    transform: scale(1.02);
+}
+
+.favorites-toggle[aria-pressed="true"] .heart-stroke {
+    stroke: #d05454;
+}
+
+.favorites-toggle[aria-pressed="true"] {
+    box-shadow: 0 8px 22px rgba(208,84,84,0.25), 0 4px 14px var(--shadow);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .favorites-toggle,
+    .favorites-toggle-icon,
+    .favorites-toggle-icon .heart-fill,
+    .favorites-toggle-icon .heart-stroke {
+        transition: none !important;
+    }
 }
 
 .theme-toggle .sun-icon {
@@ -351,6 +397,7 @@ body.favorites-only .search-container {
     text-align: left;
     color: inherit;
     font: inherit;
+    position: relative;
     background: var(--bg-secondary);
     border-radius: 10px;
     overflow: hidden;
@@ -379,6 +426,27 @@ body.favorites-only .search-container {
 .recipe-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 5px 25px var(--shadow-hover);
+}
+
+.card-favorite {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 30px;
+    height: 30px;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: color-mix(in oklab, var(--bg-secondary) 92%, white);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+    pointer-events: none;
+}
+
+.card-favorite svg {
+    width: 16px;
+    height: 16px;
+    fill: #d05454;
 }
 
 .recipe-image {
