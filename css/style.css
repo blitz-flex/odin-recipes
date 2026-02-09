@@ -306,7 +306,7 @@ body.dark-mode .theme-toggle .moon-icon {
 /* Categories */
 .category-btn {
     padding: 0.7rem 1.5rem;
-    background: var(--bg-secondary);
+    background: color-mix(in oklab, var(--bg-secondary) 82%, var(--text-primary));
     border: 2px solid transparent;
     border-radius: 50px;
     cursor: pointer;
@@ -1168,7 +1168,9 @@ html {
     }
 
     .close,
-    .print-btn {
+    .print-btn,
+    .favorite-btn,
+    .card-favorite {
         display: none !important;
     }
 
