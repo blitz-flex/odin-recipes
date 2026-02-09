@@ -266,18 +266,6 @@ body.dark-mode .theme-toggle .moon-icon {
     padding: 1rem;
 }
 
-/* Favorites */
-.favorites-section {
-    display: none;
-    max-width: 1200px;
-    margin: 0 auto 1.25rem;
-    padding: 0 1rem 0.5rem;
-}
-
-body.favorites-only .favorites-section {
-    display: block;
-}
-
 .favorites-empty {
     margin: 0.6rem 0 0.1rem;
     padding: 0 1rem;
@@ -288,9 +276,12 @@ body.favorites-only .favorites-section {
     padding-top: 0.75rem;
 }
 
+/* Favorites section is deprecated (favorites render in main grid now) */
+.favorites-section {
+    display: none !important;
+}
+
 /* Favorites-only mode (hide everything else) */
-body.favorites-only #recipes-container,
-body.favorites-only .load-more-container,
 body.favorites-only .load-more-container {
     display: none !important;
 }
