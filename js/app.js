@@ -200,7 +200,7 @@ function setupDarkMode() {
 // ============================================
 
 function setupStickyControlsBar() {
-    const controlsBar = document.querySelector('.controls-bar');
+    const controlsBar = document.querySelector('.main-header');
     if(!controlsBar) return;
     const recipesContainer = document.getElementById('recipes-container');
     const triggerOffsetPx = 12;
@@ -696,7 +696,7 @@ function setupSearch() {
 }
 
 function setupCategories() {
-    const categoriesEl = document.querySelector('.categories');
+    const categoriesEl = document.querySelector('.categories-bar');
     const searchInput = document.getElementById('search-input');
     if(!categoriesEl || !searchInput) return;
     

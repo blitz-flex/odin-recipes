@@ -35,7 +35,7 @@ body {
     background: var(--bg-primary);
     font-family: 'Georgia', serif;
     margin: 0;
-    padding: 2rem;
+    padding: 0 2rem 2rem;
     color: var(--text-primary);
     transition: background 0.3s, color 0.3s;
 }
@@ -68,40 +68,101 @@ body.print-mode .share-icon-btn {
     }
 }
 
-h1 {
-    text-align: center;
-    color: var(--accent);
-    margin: 0;
-}
-
-.site-title {
-    position: relative;
-    display: block;
-    width: 100%;
-    margin: 0 0 2.25rem;
-    font-size: clamp(2.2rem, 2.4vw + 1.1rem, 3.2rem);
-    font-weight: 700;
-    font-style: italic;
-    letter-spacing: 0.02em;
-    text-shadow: 0 2px 0 rgba(0, 0, 0, 0.06);
-}
-
-
-/* Sticky Controls Bar (Search + Categories) */
-.controls-bar {
+/* Header */
+.main-header {
     position: sticky;
     top: 0;
     z-index: 900;
+    padding: 0;
+    margin-bottom: 0.6rem;
     background: transparent;
-    padding: 0.75rem 0;
-    margin-bottom: 2rem;
-    transition: background 0.25s ease, box-shadow 0.25s ease, backdrop-filter 0.25s ease;
 }
 
-.controls-bar.is-stuck {
-    background: var(--controls-bg);
+.main-header.is-stuck {
+    background: transparent;
+}
+
+.header-shell {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0.6rem 1rem 0.75rem;
+    border-radius: 0;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+}
+
+.main-header.is-stuck .header-shell {
+    background: color-mix(in oklab, var(--controls-bg) 80%, transparent);
     backdrop-filter: blur(8px);
-    box-shadow: 0 6px 16px var(--shadow);
+    border-color: transparent;
+    box-shadow: none;
+}
+
+.top-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    text-decoration: none;
+    color: var(--accent);
+    font-weight: 700;
+    font-style: italic;
+    letter-spacing: 0.02em;
+    font-size: clamp(1.5rem, 2vw + 0.6rem, 2.2rem);
+    text-shadow: 0 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.brand-icon {
+    font-size: 1.4em;
+    line-height: 1;
+}
+
+.brand-text {
+    white-space: nowrap;
+}
+
+.top-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex: 1 1 auto;
+    justify-content: flex-end;
+}
+
+.nav-search {
+    width: min(360px, 48vw);
+    padding: 0.85rem 1.2rem;
+    border: 2px solid var(--border);
+    border-radius: 999px;
+    font-size: 0.98rem;
+    font-family: 'Georgia', serif;
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.nav-search:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(179,139,109,0.18);
+}
+
+.categories-bar {
+    margin: 1.1rem 0 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    width: 100%;
 }
 
 /* Theme Toggle Button */
@@ -242,47 +303,11 @@ body.dark-mode .theme-toggle .moon-icon {
     to { transform: rotate(0) scale(1); }
 }
 
-/* Search Container */
-.search-container {
-    max-width: 720px;
-    margin: 0 auto 1rem;
-    display: flex;
-    gap: 1rem;
-    padding: 0 1rem;
-    align-items: center;
-}
-
-#search-input {
-    flex: 1;
-    padding: 1rem 1.5rem;
-    border: 2px solid var(--border);
-    border-radius: 50px;
-    font-size: 1rem;
-    font-family: 'Georgia', serif;
-    background: var(--bg-secondary);
-    color: var(--text-primary);
-    transition: border-color 0.3s;
-}
-
-#search-input:focus {
-    outline: none;
-    border-color: var(--accent);
-}
-
 /* Categories */
-.categories {
-    display: flex;
-    gap: 0.8rem;
-    justify-content: center;
-    margin-bottom: 0;
-    flex-wrap: wrap;
-    padding: 0 1rem;
-}
-
 .category-btn {
     padding: 0.7rem 1.5rem;
     background: var(--bg-secondary);
-    border: 2px solid var(--border);
+    border: 2px solid transparent;
     border-radius: 50px;
     cursor: pointer;
     font-family: 'Georgia', serif;
@@ -332,9 +357,6 @@ body.favorites-only .load-more-container {
     display: none !important;
 }
 
-body.favorites-only .search-container {
-    justify-content: center;
-}
 
 /* Loading Skeleton Cards */
 .skeleton-card {
@@ -862,23 +884,37 @@ body.favorites-only .search-container {
         padding: 1rem;
     }
     
-    h1 {
-        font-size: 1.8rem;
-        margin-bottom: 1.5rem;
+    .main-header {
+        padding: 0.5rem 0 0.75rem;
+        margin-bottom: 1.2rem;
     }
-    
-    .search-container {
-        padding: 0;
-        margin-bottom: 0.75rem;
-        flex-wrap: nowrap;
+
+    .header-shell {
+        padding: 0.6rem 0.75rem;
+        border-radius: 12px;
+    }
+
+    .top-bar {
+        flex-wrap: wrap;
         gap: 0.6rem;
     }
 
-    #search-input {
-        flex: 1 1 auto;
-        min-width: 140px;
-        padding: 0.85rem 1.1rem;
-        font-size: 0.95rem;
+    .brand {
+        width: 100%;
+        justify-content: center;
+        font-size: 1.6rem;
+    }
+
+    .top-actions {
+        width: 100%;
+        justify-content: center;
+        flex-wrap: nowrap;
+    }
+
+    .nav-search {
+        width: min(320px, 60vw);
+        padding: 0.75rem 1rem;
+        font-size: 0.92rem;
     }
 
     .theme-toggle {
@@ -897,12 +933,7 @@ body.favorites-only .search-container {
         height: 21px;
     }
     
-    .controls-bar {
-        padding: 0.75rem 0;
-        margin-bottom: 1.25rem;
-    }
-    
-    .categories {
+    .categories-bar {
         gap: 0.5rem;
         padding: 0;
         flex-wrap: nowrap;
@@ -912,7 +943,7 @@ body.favorites-only .search-container {
         scrollbar-width: none;
     }
     
-    .categories::-webkit-scrollbar {
+    .categories-bar::-webkit-scrollbar {
         display: none;
     }
     
@@ -1074,10 +1105,8 @@ html {
         padding: 0 !important;
     }
 
-    .theme-toggle,
-    .controls-bar,
-    .search-container,
-    .categories,
+    .main-header,
+    .nav-search,
     .recipes-grid,
     .load-more-container {
         display: none !important;
