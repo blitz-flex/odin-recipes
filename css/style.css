@@ -76,10 +76,15 @@ body.print-mode .share-icon-btn {
     padding: 0;
     margin-bottom: 0.6rem;
     background: transparent;
+    padding-top: env(safe-area-inset-top, 0px);
 }
 
 .main-header.is-stuck {
-    background: transparent;
+    background: var(--controls-bg);
+    background: color-mix(in oklab, var(--controls-bg) 80%, transparent);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid color-mix(in oklab, var(--border) 70%, transparent);
 }
 
 .header-shell {
@@ -93,9 +98,8 @@ body.print-mode .share-icon-btn {
 }
 
 .main-header.is-stuck .header-shell {
-    background: color-mix(in oklab, var(--controls-bg) 80%, transparent);
-    backdrop-filter: blur(8px);
-    border-color: transparent;
+    background: transparent;
+    border-bottom: none;
     box-shadow: none;
 }
 
@@ -369,10 +373,10 @@ body.favorites-only .load-more-container {
     position: absolute;
     inset: 0;
     background: linear-gradient(
-        110deg,
-        color-mix(in oklab, var(--bg-secondary) 92%, var(--text-primary)) 8%,
-        color-mix(in oklab, var(--bg-secondary) 86%, var(--text-primary)) 18%,
-        color-mix(in oklab, var(--bg-secondary) 92%, var(--text-primary)) 33%
+            110deg,
+            color-mix(in oklab, var(--bg-secondary) 92%, var(--text-primary)) 8%,
+            color-mix(in oklab, var(--bg-secondary) 86%, var(--text-primary)) 18%,
+            color-mix(in oklab, var(--bg-secondary) 92%, var(--text-primary)) 33%
     );
     background-size: 220% 100%;
     animation: shimmer 1.25s linear infinite;
@@ -912,7 +916,7 @@ body.favorites-only .load-more-container {
     body {
         padding: 1rem;
     }
-    
+
     .main-header {
         padding: 0.5rem 0 0.75rem;
         margin-bottom: 1.2rem;
@@ -920,7 +924,7 @@ body.favorites-only .load-more-container {
 
     .header-shell {
         padding: 0.6rem 0.75rem;
-        border-radius: 12px;
+        border-radius: 0;
     }
 
     .top-bar {
@@ -961,7 +965,7 @@ body.favorites-only .load-more-container {
         width: 21px;
         height: 21px;
     }
-    
+
     .categories-bar {
         gap: 0.5rem;
         padding: 0;
@@ -971,18 +975,18 @@ body.favorites-only .load-more-container {
         -webkit-overflow-scrolling: touch;
         scrollbar-width: none;
     }
-    
+
     .categories-bar::-webkit-scrollbar {
         display: none;
     }
-    
+
     .category-btn {
         padding: 0.5rem 1rem;
         font-size: 1.08rem;
         flex: 0 0 auto;
         white-space: nowrap;
     }
-    
+
     .recipes-grid {
         grid-template-columns: 1fr;
         gap: 1.5rem;
@@ -1000,11 +1004,11 @@ body.favorites-only .load-more-container {
         width: 14px;
         height: 14px;
     }
-    
+
     .modal {
         padding: 0;
     }
-    
+
     .modal-content {
         margin: 0;
         border-radius: 0;
@@ -1038,7 +1042,7 @@ body.favorites-only .load-more-container {
         font-size: 0.88rem;
         min-height: 40px;
     }
-    
+
     .video-link {
         padding: 0.32rem 0.65rem;
         font-size: 0.76rem;
@@ -1058,23 +1062,23 @@ body.favorites-only .load-more-container {
     .recipe-detail-image {
         height: 250px;
     }
-    
+
     .recipe-detail-content {
         padding: 1.5rem;
     }
-    
+
     .recipe-detail-title {
         font-size: 1.8rem;
     }
-    
+
     .section {
         padding: 1.5rem;
     }
-    
+
     .ingredients-list {
         grid-template-columns: 1fr;
     }
-    
+
     .close {
         right: 10px;
         top: 10px;
