@@ -160,13 +160,20 @@ body.print-mode .share-icon-btn {
 
 .categories-bar {
     margin: 1.1rem 0 0;
-    padding: 0;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 0.5rem;
-    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 0.6rem;
+    flex-wrap: nowrap;
     width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding: 0 0 0.25rem;
+}
+
+.categories-bar::-webkit-scrollbar {
+    display: none;
 }
 
 /* Theme Toggle Button */
@@ -309,13 +316,15 @@ body.dark-mode .theme-toggle .moon-icon {
 
 /* Categories */
 .category-btn {
-    padding: 0.7rem 1.5rem;
+    flex: 0 0 auto;
+    white-space: nowrap;
+    padding: 0.65rem 1.25rem;
     background: color-mix(in oklab, var(--bg-secondary) 82%, var(--text-primary));
     border: 2px solid transparent;
     border-radius: 50px;
     cursor: pointer;
     font-family: 'Georgia', serif;
-    font-size: 1.2rem;
+    font-size: clamp(1rem, 0.55vw + 0.8rem, 1.2rem);
     color: var(--text-primary);
     transition: all 0.3s;
 }
@@ -945,7 +954,9 @@ body.favorites-only .load-more-container {
     }
 
     .nav-search {
-        width: min(320px, 60vw);
+        width: auto;
+        flex: 1 1 180px;
+        min-width: 0;
         padding: 0.75rem 1rem;
         font-size: 0.92rem;
     }
@@ -968,23 +979,12 @@ body.favorites-only .load-more-container {
 
     .categories-bar {
         gap: 0.5rem;
-        padding: 0;
-        flex-wrap: nowrap;
-        justify-content: flex-start;
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-        scrollbar-width: none;
-    }
-
-    .categories-bar::-webkit-scrollbar {
-        display: none;
+        padding: 0 0 0.25rem;
     }
 
     .category-btn {
         padding: 0.5rem 1rem;
-        font-size: 1.08rem;
-        flex: 0 0 auto;
-        white-space: nowrap;
+        font-size: 1.05rem;
     }
 
     .recipes-grid {
@@ -1082,6 +1082,23 @@ body.favorites-only .load-more-container {
     .close {
         right: 10px;
         top: 10px;
+    }
+}
+
+/* Small phones (e.g. 320px width) */
+@media (max-width: 360px) {
+    .header-shell {
+        padding: 0.55rem 0.6rem 0.7rem;
+    }
+
+    .top-actions {
+        gap: 0.5rem;
+    }
+
+    .theme-toggle,
+    .favorites-toggle {
+        width: 40px;
+        height: 40px;
     }
 }
 
