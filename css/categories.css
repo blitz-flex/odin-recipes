@@ -1,0 +1,43 @@
+/* Categories bar and buttons */
+.categories-bar {
+    margin: 1.9rem 0 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    gap: 0.6rem;
+    flex-wrap: nowrap;
+    width: 100%;
+    overflow-x: visible;
+    padding: 0.1rem 0 0.25rem;
+}
+
+.category-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    min-height: 44px;
+    margin-top: 0.2rem;
+    flex: 0 0 auto;
+    white-space: nowrap;
+    padding: 0.65rem 1.25rem;
+    background: color-mix(in oklab, var(--bg-secondary) 82%, var(--text-primary));
+    border: 2px solid transparent;
+    border-radius: 50px;
+    cursor: pointer;
+    font-family: 'Georgia', serif;
+    font-size: clamp(1rem, 0.55vw + 0.8rem, 1.2rem);
+    color: var(--text-primary);
+    transition: all 0.3s;
+}
+
+.category-btn:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+}
+
+.category-btn.active {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+}

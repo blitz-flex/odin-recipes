@@ -1,0 +1,174 @@
+/* Base variables and global styles */
+:root {
+    --bg-primary: #fcfbf8;
+    --bg-secondary: #fff;
+    --bg-section: #fcfbf8;
+    --text-primary: #2c3e50;
+    --text-secondary: #7f8c8d;
+    --text-muted: #999;
+    --accent: #b38b6d;
+    --accent-dark: #8b6f47;
+    --border: #e9e2d9;
+    --shadow: rgba(0,0,0,0.05);
+    --shadow-hover: rgba(0,0,0,0.15);
+    --modal-bg: rgba(0,0,0,0.85);
+    --controls-bg: rgba(252,251,248,0.78);
+}
+
+body.dark-mode {
+    --bg-primary: #0f1115;
+    --bg-secondary: #171a21;
+    --bg-section: #131721;
+    --text-primary: #e7eaf0;
+    --text-secondary: #aab2c0;
+    --text-muted: #7d8798;
+    --accent: #d4a574;
+    --accent-dark: #e7c19b;
+    --border: #2a3240;
+    --shadow: rgba(0,0,0,0.45);
+    --shadow-hover: rgba(0,0,0,0.65);
+    --modal-bg: rgba(0,0,0,0.82);
+    --controls-bg: rgba(15,17,21,0.72);
+}
+
+body {
+    background: var(--bg-primary);
+    font-family: 'Georgia', serif;
+    margin: 0;
+    padding: 0 2rem 2rem;
+    color: var(--text-primary);
+    transition: background 0.3s, color 0.3s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+body.print-mode #recipe-modal {
+    display: block;
+}
+
+/* Print: hide social share buttons */
+body.print-mode .share-actions,
+body.print-mode .share-icon-btn {
+    display: none !important;
+}
+
+@media print {
+    .share-actions,
+    .share-icon-btn {
+        display: none !important;
+    }
+
+    @page { margin: 8mm; }
+
+    body {
+        background: #fff !important;
+        color: #000 !important;
+        padding: 0 !important;
+    }
+
+    .main-header,
+    .nav-search,
+    .recipes-grid,
+    .load-more-container {
+        display: none !important;
+    }
+
+    .modal {
+        display: block !important;
+        position: static !important;
+        background: transparent !important;
+        backdrop-filter: none !important;
+        padding: 0 !important;
+        overflow: visible !important;
+        height: auto !important;
+    }
+
+    .modal-content {
+        max-width: none !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+    }
+
+    .close,
+    .print-btn,
+    .favorite-btn,
+    .card-favorite {
+        display: none !important;
+    }
+
+    .recipe-actions {
+        display: block !important;
+        margin-top: 1rem !important;
+    }
+
+    .video-link {
+        display: inline !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        background: transparent !important;
+        color: #000 !important;
+        text-decoration: underline !important;
+        box-shadow: none !important;
+        border: 0 !important;
+        font-weight: 600 !important;
+    }
+
+    .video-link-icon-wrap {
+        display: none !important;
+    }
+
+    .recipe-detail-image {
+        height: 160px !important;
+        border-radius: 0 !important;
+    }
+
+    .recipe-detail-content {
+        padding: 0 !important;
+    }
+
+    .recipe-detail-title {
+        font-size: 1.6rem !important;
+        margin: 0.5rem 0 0.25rem 0 !important;
+    }
+
+    .section {
+        background: transparent !important;
+        border: 1px solid #ddd !important;
+        border-left: 4px solid #000 !important;
+        box-shadow: none !important;
+        padding: 0.9rem !important;
+        margin: 1rem 0 !important;
+        break-inside: auto;
+    }
+
+    .ingredients-list li {
+        background: transparent !important;
+        box-shadow: none !important;
+        border-left-color: #000 !important;
+        padding: 0.35rem 0.6rem !important;
+        break-inside: avoid;
+    }
+
+    .recipe-detail-meta {
+        margin-bottom: 1rem !important;
+    }
+
+    .instructions {
+        line-height: 1.55 !important;
+        font-size: 0.98rem !important;
+    }
+}
+
+/* Smooth scroll */
+html {
+    scroll-behavior: smooth;
+}

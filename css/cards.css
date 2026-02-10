@@ -1,0 +1,204 @@
+/* Cards, grid, and list states */
+.recipes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem;
+}
+
+.favorites-empty {
+    margin: 0.6rem 0 0.1rem;
+    padding: 0 1rem;
+    color: var(--text-secondary);
+}
+
+.favorites-grid {
+    padding-top: 0.75rem;
+}
+
+/* Favorites section is deprecated (favorites render in main grid now) */
+.favorites-section {
+    display: none !important;
+}
+
+/* Favorites-only mode (hide everything else) */
+body.favorites-only .load-more-container {
+    display: none !important;
+}
+
+/* Loading Skeleton Cards */
+.skeleton-card {
+    position: relative;
+    pointer-events: none;
+}
+
+.skeleton-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        110deg,
+        color-mix(in oklab, var(--bg-secondary) 92%, var(--text-primary)) 8%,
+        color-mix(in oklab, var(--bg-secondary) 86%, var(--text-primary)) 18%,
+        color-mix(in oklab, var(--bg-secondary) 92%, var(--text-primary)) 33%
+    );
+    background-size: 220% 100%;
+    animation: shimmer 1.25s linear infinite;
+    opacity: 0.55;
+}
+
+.skeleton-card .recipe-image,
+.skeleton-card .recipe-info {
+    position: relative;
+    z-index: 1;
+}
+
+.skeleton-card .recipe-image {
+    background: color-mix(in oklab, var(--bg-secondary) 82%, var(--text-primary));
+}
+
+.skeleton-line {
+    height: 12px;
+    border-radius: 999px;
+    background: color-mix(in oklab, var(--bg-secondary) 78%, var(--text-primary));
+}
+
+.skeleton-line.title {
+    height: 16px;
+    width: 78%;
+    margin: 0 0 0.7rem;
+}
+
+.skeleton-line.meta {
+    width: 52%;
+}
+
+@keyframes shimmer {
+    0% { background-position: 100% 0; }
+    100% { background-position: -100% 0; }
+}
+
+/* Recipe Card */
+.recipe-card {
+    appearance: none;
+    border: none;
+    padding: 0;
+    width: 100%;
+    text-align: left;
+    color: inherit;
+    font: inherit;
+    position: relative;
+    background: var(--bg-secondary);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 15px var(--shadow);
+    transition: all 0.3s;
+    cursor: pointer;
+    animation: fadeIn 0.5s ease-in;
+}
+
+.recipe-card:focus-visible {
+    outline: 3px solid color-mix(in oklab, var(--accent) 70%, white);
+    outline-offset: 3px;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.recipe-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 25px var(--shadow-hover);
+}
+
+.card-favorite {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 30px;
+    height: 30px;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: color-mix(in oklab, var(--bg-secondary) 92%, white);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+    pointer-events: none;
+}
+
+.card-favorite svg {
+    width: 16px;
+    height: 16px;
+    fill: #d05454;
+}
+
+.recipe-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.recipe-info {
+    padding: 1.5rem;
+}
+
+.recipe-title {
+    color: var(--accent-dark);
+    font-size: 1.2rem;
+    margin: 0 0 0.5rem 0;
+}
+
+.recipe-meta {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+/* Load More Button */
+.load-more-container {
+    display: flex;
+    justify-content: center;
+    padding: 2rem 0;
+    margin-top: 1rem;
+}
+
+.load-more-btn {
+    padding: 1rem 3rem;
+    background: var(--bg-secondary);
+    color: var(--accent);
+    border: 2px solid var(--accent);
+    border-radius: 50px;
+    font-family: 'Georgia', serif;
+    font-size: 1.05rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 2px 10px var(--shadow);
+}
+
+.load-more-btn:hover {
+    background: var(--accent);
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(179,139,109,0.3);
+}
+
+.load-more-btn:active {
+    transform: translateY(0);
+}
+
+.load-more-btn:disabled {
+    background: var(--bg-secondary);
+    color: var(--text-muted);
+    border-color: var(--border);
+    cursor: not-allowed;
+    transform: none;
+}
