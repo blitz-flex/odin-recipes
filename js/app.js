@@ -123,7 +123,18 @@ function setupFavoritesToggle() {
   btn.addEventListener('click', async (e) => {
     e.preventDefault();
     if (isFavoritesOnlyMode()) {
-      await renderFavoritesOnlyView();
+      document.body.classList.remove('favorites-only');
+      btn.setAttribute('aria-pressed', 'false');
+      btn.setAttribute('aria-label', 'Jump to favorites');
+      btn.setAttribute('title', 'Favorites');
+      if (state.favoritesOnlySnapshot) {
+        restoreSnapshot(state.favoritesOnlySnapshot);
+        state.favoritesOnlySnapshot = null;
+      } else {
+        showLoading();
+        const random = await getRandomRecipes(state.PAGE_SIZE);
+        renderRecipes(random, true);
+      }
       return;
     }
 
