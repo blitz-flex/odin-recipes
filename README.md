@@ -23,4 +23,4 @@ Recipes are fetched from the TheMealDB public API.
 
 ##  Live Site
 
- [🍲 Odin Recipes Live ](https://fixings.netlify.app/)
+ [🍲 Odin Recipes Live ](https://cookerys.netlify.app/)
