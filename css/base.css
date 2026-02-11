@@ -9,10 +9,10 @@
     --accent: #b38b6d;
     --accent-dark: #8b6f47;
     --border: #e9e2d9;
-    --shadow: rgba(0,0,0,0.05);
-    --shadow-hover: rgba(0,0,0,0.15);
-    --modal-bg: rgba(0,0,0,0.85);
-    --controls-bg: rgba(252,251,248,0.78);
+    --shadow: rgba(0, 0, 0, 0.05);
+    --shadow-hover: rgba(0, 0, 0, 0.15);
+    --modal-bg: rgba(0, 0, 0, 0.85);
+    --controls-bg: rgba(252, 251, 248, 0.78);
 }
 
 body.dark-mode {
@@ -25,22 +25,23 @@ body.dark-mode {
     --accent: #d4a574;
     --accent-dark: #e7c19b;
     --border: #2a3240;
-    --shadow: rgba(0,0,0,0.45);
-    --shadow-hover: rgba(0,0,0,0.65);
-    --modal-bg: rgba(0,0,0,0.82);
-    --controls-bg: rgba(15,17,21,0.72);
+    --shadow: rgba(0, 0, 0, 0.45);
+    --shadow-hover: rgba(0, 0, 0, 0.65);
+    --modal-bg: rgba(0, 0, 0, 0.82);
+    --controls-bg: rgba(15, 17, 21, 0.72);
 }
 
 body {
     background: var(--bg-primary);
     font-family: 'Georgia', serif;
     margin: 0;
-    padding: 0 2rem 2rem;
+    padding: 0.5rem 2rem 2rem;
     color: var(--text-primary);
     transition: background 0.3s, color 0.3s;
 }
 
 @media (prefers-reduced-motion: reduce) {
+
     *,
     *::before,
     *::after {
@@ -62,12 +63,15 @@ body.print-mode .share-icon-btn {
 }
 
 @media print {
+
     .share-actions,
     .share-icon-btn {
         display: none !important;
     }
 
-    @page { margin: 8mm; }
+    @page {
+        margin: 8mm;
+    }
 
     body {
         background: #fff !important;

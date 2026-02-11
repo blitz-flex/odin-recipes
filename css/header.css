@@ -3,11 +3,12 @@
     position: sticky;
     top: 0;
     z-index: 900;
-    padding: 0;
-    margin-bottom: 0.6rem;
+    padding: 0.5rem 0;
+    margin-bottom: 1.5rem;
     background: transparent;
-    padding-top: env(safe-area-inset-top, 0px);
+    padding-top: calc(0.5rem + env(safe-area-inset-top, 0px));
     isolation: isolate;
+    transition: all 0.3s ease;
 }
 
 .main-header.is-stuck {
@@ -26,27 +27,24 @@
     bottom: -18px;
     height: 18px;
     pointer-events: none;
-    background: linear-gradient(
-        to bottom,
-        color-mix(in oklab, var(--controls-bg) 55%, transparent),
-        transparent
-    );
+    background: linear-gradient(to bottom,
+            color-mix(in oklab, var(--controls-bg) 55%, transparent),
+            transparent);
 }
 
 .header-shell {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0.6rem 1rem 0.75rem;
-    border-radius: 0;
+    padding: 0.8rem 1rem;
+    /* Reduced from 1.5rem to 0.8rem */
     background: transparent;
     border: none;
     box-shadow: none;
+    transition: padding 0.3s ease;
 }
 
 .main-header.is-stuck .header-shell {
-    background: transparent;
-    border-bottom: none;
-    box-shadow: none;
+    padding: 0.5rem 1rem;
 }
 
 .top-bar {
@@ -101,7 +99,7 @@
 .nav-search:focus {
     outline: none;
     border-color: var(--accent);
-    box-shadow: 0 0 0 3px rgba(179,139,109,0.18);
+    box-shadow: 0 0 0 3px rgba(179, 139, 109, 0.18);
 }
 
 /* Theme Toggle Button */
@@ -160,14 +158,14 @@
 
 .favorites-toggle:focus-visible {
     outline: none;
-    box-shadow: 0 0 0 3px rgba(179,139,109,0.22), 0 6px 20px var(--shadow-hover);
+    box-shadow: 0 0 0 3px rgba(179, 139, 109, 0.22), 0 6px 20px var(--shadow-hover);
 }
 
 .favorites-toggle-icon {
     width: 23px;
     height: 23px;
     display: block;
-    filter: drop-shadow(0 2px 6px rgba(208,84,84,0.22));
+    filter: drop-shadow(0 2px 6px rgba(208, 84, 84, 0.22));
 }
 
 .favorites-toggle-icon .heart-fill {
@@ -202,10 +200,11 @@
 }
 
 .favorites-toggle[aria-pressed="true"] {
-    box-shadow: 0 8px 22px rgba(208,84,84,0.25), 0 4px 14px var(--shadow);
+    box-shadow: 0 8px 22px rgba(208, 84, 84, 0.25), 0 4px 14px var(--shadow);
 }
 
 @media (prefers-reduced-motion: reduce) {
+
     .favorites-toggle,
     .favorites-toggle-icon,
     .favorites-toggle-icon .heart-fill,
@@ -233,11 +232,21 @@ body.dark-mode .theme-toggle .moon-icon {
 }
 
 @keyframes sunRise {
-    from { transform: rotate(-180deg) scale(0); }
-    to { transform: rotate(0) scale(1); }
+    from {
+        transform: rotate(-180deg) scale(0);
+    }
+
+    to {
+        transform: rotate(0) scale(1);
+    }
 }
 
 @keyframes moonRise {
-    from { transform: rotate(180deg) scale(0); }
-    to { transform: rotate(0) scale(1); }
+    from {
+        transform: rotate(180deg) scale(0);
+    }
+
+    to {
+        transform: rotate(0) scale(1);
+    }
 }
