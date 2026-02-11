@@ -34,9 +34,7 @@
     }
 
     .brand {
-        width: 100%;
-        justify-content: center;
-        font-size: 1.6rem;
+        display: none;
     }
 
     .top-actions {
