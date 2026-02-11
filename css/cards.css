@@ -1,7 +1,7 @@
 /* Cards, grid, and list states */
 .recipes-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-template-columns: repeat(3, 1fr);
     gap: 2rem;
     max-width: 1200px;
     margin: 0 auto;
@@ -38,12 +38,10 @@ body.favorites-only .load-more-container {
     content: "";
     position: absolute;
     inset: 0;
-    background: linear-gradient(
-        110deg,
-        color-mix(in oklab, var(--bg-secondary) 92%, var(--text-primary)) 8%,
-        color-mix(in oklab, var(--bg-secondary) 86%, var(--text-primary)) 18%,
-        color-mix(in oklab, var(--bg-secondary) 92%, var(--text-primary)) 33%
-    );
+    background: linear-gradient(110deg,
+            color-mix(in oklab, var(--bg-secondary) 92%, var(--text-primary)) 8%,
+            color-mix(in oklab, var(--bg-secondary) 86%, var(--text-primary)) 18%,
+            color-mix(in oklab, var(--bg-secondary) 92%, var(--text-primary)) 33%);
     background-size: 220% 100%;
     animation: shimmer 1.25s linear infinite;
     opacity: 0.55;
@@ -76,8 +74,13 @@ body.favorites-only .load-more-container {
 }
 
 @keyframes shimmer {
-    0% { background-position: 100% 0; }
-    100% { background-position: -100% 0; }
+    0% {
+        background-position: 100% 0;
+    }
+
+    100% {
+        background-position: -100% 0;
+    }
 }
 
 /* Recipe Card */
@@ -109,6 +112,7 @@ body.favorites-only .load-more-container {
         opacity: 0;
         transform: translateY(20px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -131,7 +135,7 @@ body.favorites-only .load-more-container {
     align-items: center;
     justify-content: center;
     background: color-mix(in oklab, var(--bg-secondary) 92%, white);
-    box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
     pointer-events: none;
 }
 
@@ -188,7 +192,7 @@ body.favorites-only .load-more-container {
     background: var(--accent);
     color: #fff;
     transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(179,139,109,0.3);
+    box-shadow: 0 4px 15px rgba(179, 139, 109, 0.3);
 }
 
 .load-more-btn:active {

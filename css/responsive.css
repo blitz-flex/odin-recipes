@@ -17,7 +17,7 @@
     body {
         padding: 1rem;
     }
-    
+
     .main-header {
         padding: 0.5rem 0 0.75rem;
         margin-bottom: 1.2rem;
@@ -68,19 +68,19 @@
         width: 21px;
         height: 21px;
     }
-    
+
     .categories-bar {
         justify-content: flex-start;
         gap: 0.6rem;
         padding: 0.1rem 0.25rem 0.25rem;
     }
-    
+
     .category-btn {
         padding: 0.5rem 1rem;
         font-size: 1.05rem;
         min-height: 40px;
     }
-    
+
     .recipes-grid {
         grid-template-columns: 1fr;
         gap: 1.5rem;
@@ -98,11 +98,11 @@
         width: 14px;
         height: 14px;
     }
-    
+
     .modal {
         padding: 0;
     }
-    
+
     .modal-content {
         margin: 0;
         border-radius: 0;
@@ -136,7 +136,7 @@
         font-size: 0.88rem;
         min-height: 40px;
     }
-    
+
     .video-link {
         padding: 0.32rem 0.65rem;
         font-size: 0.76rem;
@@ -156,23 +156,23 @@
     .recipe-detail-image {
         height: 250px;
     }
-    
+
     .recipe-detail-content {
         padding: 1.5rem;
     }
-    
+
     .recipe-detail-title {
         font-size: 1.8rem;
     }
-    
+
     .section {
         padding: 1.5rem;
     }
-    
+
     .ingredients-list {
         grid-template-columns: 1fr;
     }
-    
+
     .close {
         right: 10px;
         top: 10px;
@@ -195,7 +195,7 @@
     }
 }
 
-@media (min-width: 769px) and (max-width: 1024px) {
+@media (min-width: 769px) and (max-width: 1000px) {
     .recipes-grid {
         grid-template-columns: repeat(2, 1fr);
     }

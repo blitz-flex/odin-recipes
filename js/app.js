@@ -381,6 +381,31 @@ function setupLoadMore() {
   });
 }
 
+function updatePageSize() {
+  const width = window.innerWidth;
+  let newSize;
+  if (width <= 768) {
+    newSize = 6;
+  } else if (width <= 1000) {
+    newSize = 8;
+  } else {
+    newSize = 9;
+  }
+
+  if (state.PAGE_SIZE !== newSize) {
+    state.PAGE_SIZE = newSize;
+    // If we're already viewing recipes, re-render the list with the new PAGE_SIZE
+    if (state.allRecipes.length > 0 && !isFavoritesOnlyMode()) {
+      state.displayedRecipes = state.allRecipes.slice(0, state.PAGE_SIZE);
+      const container = document.getElementById('recipes-container');
+      if (container) {
+        container.innerHTML = state.displayedRecipes.map((r) => recipeCardHtml(r)).join('');
+        updateLoadMoreVisibility();
+      }
+    }
+  }
+}
+
 // Initialization
 window.addEventListener('DOMContentLoaded', async () => {
   showLoading();
@@ -390,6 +415,9 @@ window.addEventListener('DOMContentLoaded', async () => {
   setupFavoritesGridInteractions();
   setupFavoritesToggle();
   setActiveCategory('all');
+
+  updatePageSize();
+  window.addEventListener('resize', updatePageSize);
 
   const recipes = await getRandomRecipes(state.PAGE_SIZE);
   renderRecipes(recipes, true);
