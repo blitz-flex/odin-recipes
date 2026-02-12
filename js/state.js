@@ -1,7 +1,7 @@
 export const state = {
   allRecipes: [],
   displayedRecipes: [],
-  PAGE_SIZE: 9,
+  PAGE_SIZE: 12,
   currentMode: 'random', // 'random' | 'search' | 'category' | 'favorites'
   currentCategory: 'all',
   currentQuery: '',

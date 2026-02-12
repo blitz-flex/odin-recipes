@@ -385,11 +385,11 @@ function updatePageSize() {
   const width = window.innerWidth;
   let newSize;
   if (width <= 768) {
-    newSize = 6;
-  } else if (width <= 1000) {
     newSize = 8;
+  } else if (width <= 1000) {
+    newSize = 12;
   } else {
-    newSize = 9;
+    newSize = 15;
   }
 
   if (state.PAGE_SIZE !== newSize) {
