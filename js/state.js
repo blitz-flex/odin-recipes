@@ -1,13 +1,15 @@
+import { FAVORITES_STORAGE_KEY, PAGE_SIZE_TABLET } from './config.js';
+
 export const state = {
   allRecipes: [],
   displayedRecipes: [],
-  PAGE_SIZE: 12,
+  PAGE_SIZE: PAGE_SIZE_TABLET,
   currentMode: 'random', // 'random' | 'search' | 'category' | 'favorites'
   currentCategory: 'all',
   currentQuery: '',
   ORIGINAL_TITLE: document.title,
   currentRecipeForShare: null,
-  FAVORITES_STORAGE_KEY: 'odin_recipes_favorites_v1',
+  FAVORITES_STORAGE_KEY: FAVORITES_STORAGE_KEY,
   favoritesOnlySnapshot: null,
   favoriteRecipesCache: [],
 };

@@ -1,6 +1,8 @@
 import { state } from './state.js';
 
-const API_URL = 'https://www.themealdb.com/api/json/v1/1';
+import { API_BASE_URL } from './config.js';
+
+const API_URL = API_BASE_URL;
 
 export async function getRandomRecipes(count = state.PAGE_SIZE) {
   const recipes = [];

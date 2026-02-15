@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <title>Odin Recipes</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
     <header class="main-header">
         <div class="header-shell">
@@ -16,30 +18,25 @@
                     <span class="brand-text">Odin Recipes</span>
                 </a>
                 <div class="top-actions">
-                    <input type="text"
-                           id="search-input"
-                           class="nav-search"
-                           placeholder="Search recipes...">
+                    <input type="text" id="search-input" class="nav-search" placeholder="Search recipes...">
                     <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">
                         <span class="sun-icon">🔆</span>
                         <span class="moon-icon">🌙</span>
                     </button>
-                    <button id="favorites-toggle"
-                            class="favorites-toggle"
-                            type="button"
-                            aria-label="Jump to favorites"
-                            aria-pressed="false"
-                            title="Favorites">
+                    <button id="favorites-toggle" class="favorites-toggle" type="button" aria-label="Jump to favorites"
+                        aria-pressed="false" title="Favorites">
                         <svg class="favorites-toggle-icon" viewBox="0 0 24 24" aria-hidden="true">
                             <defs>
                                 <linearGradient id="favorite-heart-gradient" x1="0" y1="0" x2="1" y2="1">
-                                    <stop offset="0%" stop-color="#ff6b6b"/>
-                                    <stop offset="60%" stop-color="#f04f7f"/>
-                                    <stop offset="100%" stop-color="#c93b6a"/>
+                                    <stop offset="0%" stop-color="#ff6b6b" />
+                                    <stop offset="60%" stop-color="#f04f7f" />
+                                    <stop offset="100%" stop-color="#c93b6a" />
                                 </linearGradient>
                             </defs>
-                            <path class="heart-fill" d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/>
-                            <path class="heart-stroke" d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/>
+                            <path class="heart-fill"
+                                d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z" />
+                            <path class="heart-stroke"
+                                d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z" />
                         </svg>
                     </button>
                 </div>
@@ -61,7 +58,7 @@
         <p id="favorites-empty" class="favorites-empty">No favorites yet — open a recipe and tap the heart.</p>
         <div id="favorites-container" class="recipes-grid favorites-grid" aria-label="Favorite recipes"></div>
     </section>
-    
+
     <div id="recipes-container" class="recipes-grid">
         <p style="text-align: center;">Loading recipes...</p>
     </div>
@@ -72,14 +69,15 @@
         </button>
     </div>
 
-	    <!-- Recipe Modal -->
-	    <div id="recipe-modal" class="modal">
-	        <div class="modal-content">
-	            <span class="close">&times;</span>
-	            <div id="recipe-details"></div>
-	        </div>
-	    </div>
+    <!-- Recipe Modal -->
+    <div id="recipe-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id="recipe-details"></div>
+        </div>
+    </div>
 
     <script type="module" src="js/app.js"></script>
 </body>
+
 </html>

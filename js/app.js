@@ -1,4 +1,13 @@
 import { state } from './state.js';
+import {
+  PAGE_SIZE_MOBILE,
+  PAGE_SIZE_TABLET,
+  PAGE_SIZE_DESKTOP,
+  MOBILE_BREAKPOINT,
+  TABLET_BREAKPOINT,
+  SEARCH_DEBOUNCE_MS,
+  MIN_SEARCH_LENGTH,
+} from './config.js';
 import { setupDarkMode, setupStickyControlsBar } from './theme.js';
 import { getRandomRecipes, searchRecipes, filterByCategory } from './api.js';
 import {
@@ -166,7 +175,7 @@ function setupSearch() {
         await renderFavoritesOnlyView();
         return;
       }
-      if (query.length > 2) {
+      if (query.length >= MIN_SEARCH_LENGTH) {
         state.currentMode = 'search';
         state.currentQuery = query;
         state.currentCategory = 'all';
@@ -183,7 +192,7 @@ function setupSearch() {
         const recipes = await getRandomRecipes(state.PAGE_SIZE);
         renderRecipes(recipes);
       }
-    }, 500);
+    }, SEARCH_DEBOUNCE_MS);
   });
 }
 
@@ -384,12 +393,12 @@ function setupLoadMore() {
 function updatePageSize() {
   const width = window.innerWidth;
   let newSize;
-  if (width <= 768) {
-    newSize = 8;
-  } else if (width <= 1000) {
-    newSize = 12;
+  if (width <= MOBILE_BREAKPOINT) {
+    newSize = PAGE_SIZE_MOBILE;
+  } else if (width <= TABLET_BREAKPOINT) {
+    newSize = PAGE_SIZE_TABLET;
   } else {
-    newSize = 15;
+    newSize = PAGE_SIZE_DESKTOP;
   }
 
   if (state.PAGE_SIZE !== newSize) {
