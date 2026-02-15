@@ -40,19 +40,24 @@ To run this project locally, follow these simple steps:
 ```
 odin-recipes/
 ├── css/                # Stylesheets (Modular CSS)
-│   ├── base.css        # Global styles and variables
-│   ├── header.css      # Header and navigation styles
+│   ├── base.css        # Global variables and resets
+│   ├── header.css      # Header and navigation
+│   ├── categories.css  # Category filter buttons
 │   ├── cards.css       # Recipe card components
-│   ├── modal.css       # Modal and overlay styles
-│   └── responsive.css  # Media queries for responsiveness
+│   ├── modal.css       # Recipe details modal
+│   ├── responsive.css  # Media queries
+│   └── style.css       # Main entry (imports all)
 ├── js/                 # JavaScript Logic (ES Modules)
-│   ├── app.js          # Main application entry point
-│   ├── api.js          # API interaction layer
-│   ├── state.js        # Global state management
-│   ├── theme.js        # Dark mode and theme logic
-│   └── ui.js           # DOM manipulation and rendering
+│   ├── app.js          # Core application & event listeners
+│   ├── api.js          # TheMealDB API interaction
+│   ├── config.js       # Centralized constants & settings
+│   ├── state.js        # Dynamic app state management
+│   ├── ui.js           # DOM rendering & HTML templates
+│   ├── favorites.js    # LocalStorage favorites logic
+│   ├── modal.js        # Modal handling & sharing logic
+│   └── theme.js        # Dark mode & sticky UI effects
 ├── index.html          # Main HTML entry point
-└── README.md           # Project documentation
+└── README.md           # Documentation
 ```
 
 ##  Live Site
