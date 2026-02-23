@@ -29,6 +29,7 @@
         opacity: 0;
         transform: translateY(-20px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -43,7 +44,7 @@
     cursor: pointer;
     z-index: 1001;
     color: #fff;
-    background: rgba(0,0,0,0.5);
+    background: rgba(0, 0, 0, 0.5);
     width: 40px;
     height: 40px;
     border-radius: 50%;
@@ -54,7 +55,7 @@
 }
 
 .close:hover {
-    background: rgba(0,0,0,0.7);
+    background: rgba(0, 0, 0, 0.7);
     transform: rotate(90deg);
 }
 
@@ -143,7 +144,7 @@
 .favorite-btn:focus-visible {
     outline: none;
     border-color: var(--accent);
-    box-shadow: 0 0 0 3px rgba(179,139,109,0.22), 0 4px 14px var(--shadow-hover);
+    box-shadow: 0 0 0 3px rgba(179, 139, 109, 0.22), 0 4px 14px var(--shadow-hover);
 }
 
 .favorite-btn.is-favorite {
@@ -218,7 +219,7 @@
 
 .share-icon-btn:focus-visible {
     outline: none;
-    box-shadow: 0 0 0 3px rgba(179,139,109,0.22), 0 4px 12px var(--shadow-hover);
+    box-shadow: 0 0 0 3px rgba(179, 139, 109, 0.22), 0 4px 12px var(--shadow-hover);
 }
 
 .share-icon-btn[data-action="share-facebook"]:hover {
@@ -240,7 +241,7 @@
     border: 2px solid var(--border);
     background: var(--bg-secondary);
     color: var(--text-primary);
-    font-family: 'Georgia', serif;
+    font-family: inherit;
     font-size: 0.9rem;
     font-weight: 600;
     cursor: pointer;
@@ -304,7 +305,7 @@
 
 .ingredients-list li:hover {
     transform: translateX(5px);
-    box-shadow: 0 4px 12px rgba(179,139,109,0.2);
+    box-shadow: 0 4px 12px rgba(179, 139, 109, 0.2);
     border-left-width: 4px;
     background: var(--bg-section);
 }
@@ -380,16 +381,25 @@
 .video-link:focus-visible {
     outline: none;
     border-color: var(--accent);
-    box-shadow: 0 0 0 3px rgba(179,139,109,0.22), 0 3px 12px var(--shadow-hover);
+    box-shadow: 0 0 0 3px rgba(179, 139, 109, 0.22), 0 3px 12px var(--shadow-hover);
 }
 
 @keyframes videoIconPop {
-    0% { transform: scale(1); }
-    45% { transform: scale(1.1); }
-    100% { transform: scale(1.04); }
+    0% {
+        transform: scale(1);
+    }
+
+    45% {
+        transform: scale(1.1);
+    }
+
+    100% {
+        transform: scale(1.04);
+    }
 }
 
 @media (prefers-reduced-motion: reduce) {
+
     .video-link,
     .video-link-icon,
     .video-link-icon-wrap {
@@ -410,5 +420,7 @@
 }
 
 @keyframes spin {
-    to { transform: rotate(360deg); }
+    to {
+        transform: rotate(360deg);
+    }
 }

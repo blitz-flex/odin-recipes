@@ -180,7 +180,7 @@ body.favorites-only .load-more-container {
     color: var(--accent);
     border: 2px solid var(--accent);
     border-radius: 50px;
-    font-family: 'Georgia', serif;
+    font-family: inherit;
     font-size: 1.05rem;
     font-weight: 600;
     cursor: pointer;
