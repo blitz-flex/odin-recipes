@@ -1,37 +1,107 @@
-# 🍳 Odin Recipes
+<h1 align="center">🍳 Odin Recipes</h1>
 
-A beautiful, modern recipe application built with vanilla HTML, CSS, and JavaScript. Explore random recipes, search for your favorites, filter by category, and save the ones you love!
+##  Overview
+
+Odin Recipes  was designed to bridge the gap between elegant design and pure web fundamentals. Built entirely without frameworks or build tools, it showcases the power of native **HTML5**, **CSS3**, and **Vanilla JavaScript (ES6+)**. The application invites users to explore, search, and save culinary inspiration in an environment that feels premium and distraction-free.
+
+This project was developed as part of [The Odin Project](https://www.theodinproject.com) curriculum and serves as a demonstration of competency in modern front-end fundamentals.
 
 
-
-## Key Capabilities
+## Features
 
 | Feature | Description |
 | :--- | :--- |
-| **Discover** | A curated random recipe generation engine to spark culinary inspiration. |
-| **Instant Search** | Lightning-fast dish retrieval with real-time feedback. |
-| **Categorization** | Seamlessly filter recipes by tailored categories. |
-| **Persistent Favorites** | Secure local storage allows users to save and access their preferred recipes offline. |
-| **Thematic Design** | A sophisticated toggle between a stark Light Mode and an elegant Dark Mode. |
-| **Responsive Harmony** | Pixel-perfect layouts fluidly adapting to mobile, tablet, and desktop interfaces. |
-| **Print Interface** | A specialized, distraction-free view designed exclusively for the kitchen environment. |
+|  **Random Discovery** | A curated random recipe engine to spark culinary inspiration on every visit. |
+|  **Instant Search** | Debounced, real-time dish retrieval with live feedback — no button presses needed. |
+|  **Category Filtering** | Seamlessly filter recipes by type: Dessert, Seafood, Chicken, Pasta, Beef, and more. |
+|  **Persistent Favorites** | Recipes you love are saved to `localStorage` and survive page refreshes. |
+|  **Dark / Light Mode** | A sophisticated toggle between a sleek Dark Mode and a clean Light Mode, persisted across sessions. |
+|  **Fully Responsive** | Pixel-perfect fluid layouts adapting beautifully to mobile, tablet, and desktop viewports. |
+|  **Print-Friendly** | A specialized, distraction-free view optimized for the kitchen environment. |
+|  **Load More Pagination** | Dynamically loads additional recipes without a full page reload. |
 
-## Technical Architecture
 
-The core philosophy of this project is structural integrity and code quality. It leverages modern web standards over external dependencies to ensure a lightweight and highly performant application lifecycle.
+## Stack
 
-- **Markup:** Semantic HTML5 prioritizing accessibility and structural clarity.
-- **Styling:** CSS3 powered by Custom Properties, intelligent Grid/Flexbox layouts, and a modular architectural approach.
-- **Logic:** Vanilla JavaScript (ES6+) utilizing ES Modules, asynchronous control flow (`async/await`), and the native `fetch` API.
-- **Data Integration:** Dynamically populated via TheMealDB REST API.
+| Layer | Technology | Details |
+| :--- | :--- | :--- |
+| **Markup** | HTML5 | Semantic elements prioritizing accessibility (`aria-*` attributes) and structural clarity |
+| **Styling** | CSS3 | Custom Properties, modular architecture, Grid + Flexbox layouts |
+| **Logic** | Vanilla JavaScript (ES6+) | ES Modules, `async/await`, native `fetch` API |
+| **Data** | [TheMealDB REST API](https://www.themealdb.com/api.php) | Free, public meal database with 300+ recipes |
+| **Persistence** | Web Storage API | `localStorage` for favorites and theme preference |
+| **Hosting** | Netlify | Continuous deployment from GitHub |
 
----
+## Application Modules
 
-## Local Environment
+| Module | Responsibility |
+| :--- | :--- |
+| `config.js` | Centralized environment constants (API URL, breakpoints, debounce timings, storage keys) |
+| `state.js` | Single source of truth for dynamic application state (current page, active filter, search query) |
+| `api.js` | REST integration layer — `getRandomRecipes`, `searchRecipes`, `filterByCategory`, `getRecipeDetails` |
+| `app.js` | Core application lifecycle — bootstraps, wires events, and orchestrates all modules |
+| `ui.js` | DOM manipulation and card/template rendering |
+| `modal.js` | Full recipe detail modal — opens, populates, and manages interaction |
+| `favorites.js` | Persistent favorites read/write from `localStorage` |
+| `theme.js` | Dark/Light theme toggling with persistence |
 
-Experience the application in your local development workspace with minimal setup.
 
-### Initialization
+
+##  Project Structure
+
+```text
+odin-recipes/
+│
+├── css/
+│   ├── base.css          # Global CSS custom properties and foundation resets
+│   ├── header.css        # Navigation bar, search input, and theme toggle styles
+│   ├── categories.css    # Category filter button bar
+│   ├── cards.css         # Recipe card component (grid item, image, overlay)
+│   ├── modal.css         # Full-screen recipe detail modal and overlays
+│   ├── responsive.css    # Viewport-specific media queries and layout adaptations
+│   └── style.css         # Primary stylesheet entry point (imports all modules)
+│
+├── js/
+│   ├── api.js            # REST API integration and data fetching orchestration
+│   ├── app.js            # Core application lifecycle and event wiring
+│   ├── config.js         # Centralized environment constants and magic numbers
+│   ├── favorites.js      # Persistent favorites state management via localStorage
+│   ├── modal.js          # Recipe detail modal interaction and rendering
+│   ├── state.js          # Reactive application state container
+│   ├── theme.js          # Interface theming and dark mode persistence
+│   └── ui.js             # DOM manipulation, card rendering, and template engine
+│
+└── index.html            # Application entry point — single-page shell
+```
+
+
+
+##  API Reference
+
+This project integrates with the free **[TheMealDB API](https://www.themealdb.com/api.php)** (v1).
+
+| Endpoint | HTTP Method | Usage |
+| :--- | :--- | :--- |
+| `/random.php` | `GET` | Fetch a single random meal |
+| `/search.php?s={query}` | `GET` | Search meals by name |
+| `/filter.php?c={category}` | `GET` | Filter meals by category |
+| `/lookup.php?i={id}` | `GET` | Fetch full meal details by ID |
+
+All requests are made client-side using the native `fetch` API with `async/await` error handling.
+
+
+
+##  Getting Started
+
+Experience the application in your local environment with minimal setup. **No build tool or package manager required.**
+
+### Prerequisites
+
+- Any modern web browser (Chrome 80+, Firefox 75+, Safari 14+, Edge 80+)
+- A local development server *(recommended — see step 3)*
+
+
+## Initialization
 
 1. **Clone the repository**
    ```bash
@@ -46,31 +116,13 @@ Experience the application in your local development workspace with minimal setu
 3. **Launch the application**
    Open the `index.html` file in any modern web browser. For an optimal development iteration cycle, utilize a local server (e.g., Live Server extension in VS Code).
 
-## System Structure
 
-The codebase is strictly organized to maintain scalability, readability, and a strict separation of concerns.
+##  Design Highlights
 
-```text
-odin-recipes/
-├── css/
-│   ├── base.css        # Global CSS variables and foundation resets
-│   ├── header.css      # Navigation and thematic configuration
-│   ├── categories.css  # Interactive filtering modules
-│   ├── cards.css       # Recipe card component styling
-│   ├── modal.css       # Pop-up interfaces and overlays
-│   ├── responsive.css  # Viewport adaptation protocols
-│   └── style.css       # Primary stylesheet entry point
-├── js/
-│   ├── api.js          # REST integration and data fetching orchestration
-│   ├── app.js          # Core application lifecycle management
-│   ├── config.js       # Centralized environment configurations
-│   ├── favorites.js    # Persistent state management
-│   ├── modal.js        # Interaction bridging and modal logic
-│   ├── state.js        # Dynamic application state containment
-│   ├── theme.js        # Interface schematics and dark mode behavior
-│   └── ui.js           # DOM manipulation and template rendering
-└── index.html          # HTML Entry point
-```
+- **Color System:** Fully theme-aware via CSS Custom Properties — switching between light and dark mode requires zero JS color manipulation.
+- **Typography:** Uses the **Inter** typeface (via Google Fonts) at weights 300–700 for a clean, modern reading experience.
+- **Animations:** Subtle CSS transitions on cards, modals, and interactive controls for a premium feel without distraction.
+- **Accessibility:** Semantic HTML5 elements, `aria-label` on all interactive components, and keyboard-navigable modal.
 
 ##  Live Site
 
