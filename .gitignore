@@ -2,26 +2,12 @@
 .idea/
 *.iml
 .vscode/
-*.sublime-project
-*.sublime-workspace
 
 # OS
 .DS_Store
 Thumbs.db
-desktop.ini
 
-# Logs
-*.log
-npm-debug.log*
-
-# Dependencies
 node_modules/
-
-# Build / temp
 dist/
 build/
-*.tmp
 
-# Misc
-.env
-.env.local
