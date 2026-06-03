@@ -1,0 +1,17 @@
+# IDE
+.idea/
+*.iml
+.vscode/
+*.sublime-*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Dependencies / build (if any)
+node_modules/
+dist/
+build/
+
+# Logs
+*.log
