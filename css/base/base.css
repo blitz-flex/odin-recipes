@@ -1,0 +1,59 @@
+/* Base variables, globals, theming and print styles */
+:root {
+    /* Premium Warm Culinary Light Mode */
+    --bg-primary: #FDFBF7;
+    --bg-secondary: #FFFFFF;
+    --bg-section: #F5F2EB;
+    --text-primary: #2C2621;
+    --text-secondary: #6A605B;
+    --text-muted: #A39B96;
+    --accent: #E05D36;
+    --accent-dark: #B94422;
+    --border: #E8E3DD;
+    --shadow: rgba(44, 38, 33, 0.05);
+    --shadow-hover: rgba(44, 38, 33, 0.12);
+    --modal-bg: rgba(28, 25, 23, 0.65);
+    --controls-bg: rgba(253, 251, 247, 0.80);
+}
+
+body.dark-mode {
+    /* Premium Warm Culinary Dark Mode */
+    --bg-primary: #171514;
+    --bg-secondary: #221F1E;
+    --bg-section: #12100F;
+    --text-primary: #F2EFEA;
+    --text-secondary: #AFA8A3;
+    --text-muted: #7A726E;
+    --accent: #E8714F;
+    --accent-dark: #FF9B7D;
+    --border: #3A3532;
+    --shadow: rgba(0, 0, 0, 0.35);
+    --shadow-hover: rgba(0, 0, 0, 0.55);
+    --modal-bg: rgba(10, 9, 8, 0.75);
+    --controls-bg: rgba(23, 21, 20, 0.80);
+}
+
+body {
+    background: var(--bg-primary);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    margin: 0;
+    padding: 0.5rem 2rem 2rem;
+    color: var(--text-primary);
+    transition: background 0.3s, color 0.3s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+html {
+    scroll-behavior: smooth;
+}

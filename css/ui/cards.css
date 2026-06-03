@@ -18,17 +18,16 @@
     padding-top: 0.75rem;
 }
 
-/* Favorites section is deprecated (favorites render in main grid now) */
+/* Legacy: favorites now render in main grid */
 .favorites-section {
     display: none !important;
 }
 
-/* Favorites-only mode (hide everything else) */
 body.favorites-only .load-more-container {
     display: none !important;
 }
 
-/* Loading Skeleton Cards */
+/* Loading Skeletons */
 .skeleton-card {
     position: relative;
     pointer-events: none;

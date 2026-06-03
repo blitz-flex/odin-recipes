@@ -36,7 +36,6 @@
     max-width: 1200px;
     margin: 0 auto;
     padding: 0.8rem 1rem;
-    /* Reduced from 1.5rem to 0.8rem */
     background: transparent;
     border: none;
     box-shadow: none;
@@ -102,7 +101,7 @@
     box-shadow: 0 0 0 3px rgba(179, 139, 109, 0.18);
 }
 
-/* Theme Toggle Button */
+/* Theme Toggle Button (sun/moon + dark mode) */
 .theme-toggle {
     position: static;
     width: 46px;

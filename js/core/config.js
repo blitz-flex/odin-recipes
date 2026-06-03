@@ -1,6 +1,6 @@
 /**
- * Global configuration constants for the application.
- * extracting "magic numbers" and strings helps maintainability.
+ * Centralized configuration (magic numbers, keys, API base).
+ * Helps maintainability and avoids hard-coded values across modules.
  */
 
 // API Configuration
@@ -10,8 +10,8 @@ export const API_BASE_URL = 'https://www.themealdb.com/api/json/v1/1';
 export const PAGE_SIZE_MOBILE = 8;
 export const PAGE_SIZE_TABLET = 12;
 export const PAGE_SIZE_DESKTOP = 15;
-export const MOBILE_BREAKPOINT = 768; // px
-export const TABLET_BREAKPOINT = 1000; // px
+export const MOBILE_BREAKPOINT = 768;
+export const TABLET_BREAKPOINT = 1000;
 
 // Search Configuration
 export const SEARCH_DEBOUNCE_MS = 500;

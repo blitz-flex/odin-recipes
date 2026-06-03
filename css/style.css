@@ -1,6 +1,9 @@
-@import url('./base.css');
-@import url('./header.css');
-@import url('./categories.css');
-@import url('./cards.css');
-@import url('./modal.css');
-@import url('./responsive.css');
+@import url('./base/base.css');
+@import url('./ui/header.css');
+@import url('./ui/categories.css');
+@import url('./ui/cards.css');
+@import url('./ui/modal.css');
+@import url('./ui/detail.css');
+@import url('./ui/detail-actions.css');
+@import url('./utilities/responsive.css');
+@import url('./utilities/print.css');

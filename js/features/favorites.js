@@ -1,5 +1,5 @@
-import { state } from './state.js';
-import { getRecipeDetails } from './api.js';
+import { state } from '../core/state.js';
+import { getRecipeDetails } from '../api/api.js';
 
 export function readFavoriteIds() {
   try {

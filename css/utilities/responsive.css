@@ -1,15 +1,7 @@
 /* Responsive overrides */
 @media (max-width: 1100px) {
     .categories-bar {
-        justify-content: flex-start;
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-        scrollbar-width: none;
         padding: 0.1rem 0.25rem 0.25rem;
-    }
-
-    .categories-bar::-webkit-scrollbar {
-        display: none;
     }
 }
 
@@ -196,5 +188,21 @@
 @media (min-width: 769px) and (max-width: 1000px) {
     .recipes-grid {
         grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Moved from detail.css for centralization */
+@media (min-width: 900px) {
+    .ingredients-list {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .video-link,
+    .video-link-icon,
+    .video-link-icon-wrap {
+        transition: none !important;
+        animation: none !important;
     }
 }

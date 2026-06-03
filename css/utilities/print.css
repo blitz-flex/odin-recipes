@@ -1,0 +1,155 @@
+/* Print styles and .print-mode (for JS-triggered print preview) */
+
+body.print-mode #recipe-modal {
+    display: block;
+}
+
+body.print-mode .share-actions,
+body.print-mode .share-icon-btn {
+    display: none !important;
+}
+
+@media print {
+    .share-actions,
+    .share-icon-btn,
+    .main-header,
+    .nav-search,
+    .recipes-grid,
+    .load-more-container,
+    .favorites-section,
+    .close,
+    .print-btn,
+    .favorite-btn,
+    .card-favorite,
+    .recipe-actions,
+    .recipe-detail-meta,
+    .instructions-footer,
+    .section h3 {
+        display: none !important;
+    }
+
+    @page {
+        margin: 10mm;
+        size: A4;
+    }
+
+    body {
+        background: #fff !important;
+        color: #000 !important;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 11pt;
+        line-height: 1.4;
+        padding: 0 !important;
+    }
+
+    .modal {
+        display: block !important;
+        position: static !important;
+        background: transparent !important;
+        padding: 0 !important;
+        overflow: visible !important;
+        height: auto !important;
+    }
+
+    .modal-content {
+        max-width: none !important;
+        width: 100% !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+        border: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    .recipe-detail-image {
+        width: 100% !important;
+        height: auto !important;
+        max-height: 220px !important;
+        object-fit: cover !important;
+        border-radius: 0 !important;
+        border: none !important;
+        margin: 0 0 12px 0 !important;
+        display: block !important;
+        page-break-after: avoid;
+    }
+
+    #recipe-details {
+        position: relative !important;
+    }
+
+    .recipe-title-row {
+        position: absolute !important;
+        top: 10px !important;
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+        z-index: 10 !important;
+        background: rgba(0, 0, 0, 0.8) !important;
+        color: #fff !important;
+        padding: 6px 14px !important;
+        border-radius: 4px !important;
+        max-width: 90% !important;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.6) !important;
+        text-align: center !important;
+        border: 1px solid rgba(255,255,255,0.2) !important;
+    }
+
+    .recipe-title-row .favorite-btn {
+        display: none !important;
+    }
+
+    .recipe-detail-title {
+        font-size: 1.35rem !important;
+        margin: 0 !important;
+        color: #fff !important;
+        font-weight: 800 !important;
+        line-height: 1.15 !important;
+        text-shadow: 0 2px 5px rgba(0,0,0,0.95) !important, 0 0 3px rgba(0,0,0,0.7) !important;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        letter-spacing: 0.8px !important;
+    }
+
+    .recipe-detail-content {
+        padding: 0 !important;
+    }
+
+    .section {
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        margin: 0 0 10px 0 !important;
+        break-inside: avoid;
+    }
+
+    .ingredients-list {
+        display: block !important;
+        column-count: 2;
+        column-gap: 12px;
+        margin: 0 !important;
+        padding: 0 !important;
+        font-size: 10pt !important;
+    }
+
+    .ingredients-list li {
+        background: transparent !important;
+        box-shadow: none !important;
+        padding: 2px 0 !important;
+        margin-bottom: 2px !important;
+        break-inside: avoid;
+        font-size: 10pt !important;
+        display: block !important;
+        border-left: 2px solid #000 !important;
+        padding-left: 6px !important;
+    }
+
+    .instructions {
+        line-height: 1.5 !important;
+        font-size: 10.5pt !important;
+        color: #000 !important;
+        margin: 0 !important;
+        white-space: pre-line !important;
+    }
+}

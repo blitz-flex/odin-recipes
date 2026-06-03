@@ -1,0 +1,74 @@
+/* Categories bar and buttons */
+.categories-bar {
+    margin: 1.9rem 0 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0.6rem;
+    flex-wrap: nowrap;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding: 0.1rem 0.5rem 0.25rem;
+    position: relative;
+    scroll-behavior: smooth;
+
+    /* JS-controlled soft edge fade for horizontal overflow (see categories.js) */
+    -webkit-mask-image: linear-gradient(to right, black 0%, black calc(100% - 2.5rem), transparent 100%);
+    mask-image: linear-gradient(to right, black 0%, black calc(100% - 2.5rem), transparent 100%);
+}
+
+/* Hide scrollbar visually */
+.categories-bar::-webkit-scrollbar {
+    display: none;
+}
+
+/* Dynamic soft edge mask (controlled by JS in categories.js) */
+
+
+
+
+.category-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    min-height: 44px;
+    margin-top: 0.2rem;
+    flex: 0 0 auto;
+    white-space: nowrap;
+    padding: 0.65rem 1.25rem;
+    background: var(--bg-section);
+    border: 2px solid var(--border);
+    border-radius: 50px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: clamp(1rem, 0.55vw + 0.8rem, 1.2rem);
+    color: var(--text-primary);
+    transition: all 0.3s;
+}
+
+.category-btn:hover {
+    background: color-mix(in oklab, var(--bg-section) 88%, var(--text-primary) 6%);
+    border-color: var(--accent);
+    transform: translateY(-2px);
+}
+
+.category-btn.active {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+}
+
+/* Distinct "All" button style (stands out as primary reset) */
+.category-btn[data-category="all"]:not(.active) {
+    font-weight: 600;
+    background: color-mix(in oklab, var(--bg-section) 55%, var(--accent) 22%);
+    border-color: color-mix(in oklab, var(--accent) 65%, var(--border));
+}
+
+.category-btn[data-category="all"]:not(.active):hover {
+    border-color: var(--accent);
+    background: color-mix(in oklab, var(--bg-section) 45%, var(--accent) 28%);
+}
