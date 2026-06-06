@@ -2,30 +2,35 @@ import { state } from '../core/state.js';
 import { getRecipeDetails } from '../api/api.js';
 import {
   readFavoriteIds,
-  writeFavoriteIds,
+  toggleFavoriteById,
+  updateFavoriteUIForId,
   setFavoriteButtonState,
   isFavoritesOnlyMode,
 } from './favorites.js';
-import { recipeDetailHtml, favoriteBadgeHtml } from '../ui/templates.js';
+import { recipeDetailHtml } from '../ui/templates.js';
 import { refreshFavoritesUI } from './views.js';
+
+function setModalOpen(modal, isOpen) {
+  modal.classList.toggle('is-open', isOpen);
+  modal.setAttribute('aria-hidden', isOpen ? 'false' : 'true');
+  document.body.classList.toggle('modal-open', isOpen);
+}
 
 export async function showRecipe(id) {
   const modal = document.getElementById('recipe-modal');
   const details = document.getElementById('recipe-details');
-  modal.style.display = 'block';
+  setModalOpen(modal, true);
   setRecipeInUrl(id);
   details.innerHTML = `
-        <div style="text-align:center; padding:3rem;">
-            <p style="font-size: 1.2rem; color: #b38b6d;">🍳 Loading recipe...</p>
-        </div>
+        <p class="ledger-loading" style="padding: 2.5rem 1rem;">🍳 Loading recipe…</p>
     `;
 
   const recipe = await getRecipeDetails(id);
   if (!recipe) {
     details.innerHTML = `
-            <div style="text-align:center; padding:2rem;">
-                <h3 style="color: #e74c3c;">😕 Recipe not found</h3>
-                <p>Please try another recipe</p>
+            <div class="empty-ledger" style="padding: 2rem 1rem;">
+                <h3 class="empty-ledger-title">😕 Recipe not found</h3>
+                <p class="empty-ledger-text">Please try another recipe.</p>
             </div>
         `;
     return;
@@ -44,26 +49,19 @@ export async function showRecipe(id) {
 
 export function setupModal() {
   const modal = document.getElementById('recipe-modal');
-  const closeBtn = document.querySelector('.close');
-  if (!modal || !closeBtn) return;
+  if (!modal) return;
 
-  closeBtn.addEventListener('click', () => {
-    modal.style.display = 'none';
+  const closeModal = () => {
+    setModalOpen(modal, false);
     clearRecipeFromUrl();
-  });
+  };
 
   window.addEventListener('click', (e) => {
-    if (e.target === modal) {
-      modal.style.display = 'none';
-      clearRecipeFromUrl();
-    }
+    if (e.target === modal) closeModal();
   });
 
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && modal.style.display === 'block') {
-      modal.style.display = 'none';
-      clearRecipeFromUrl();
-    }
+    if (e.key === 'Escape' && modal.classList.contains('is-open')) closeModal();
   });
 }
 
@@ -123,22 +121,12 @@ export function setupFavorites() {
     const id = btn.dataset.recipeId || state.currentRecipeForShare?.idMeal;
     if (!id) return;
 
-    const favorites = readFavoriteIds();
-    const key = String(id);
-    const shouldFavorite = !favorites.has(key);
-    if (shouldFavorite) favorites.add(key); else favorites.delete(key);
-    writeFavoriteIds(favorites);
+    const shouldFavorite = toggleFavoriteById(id);
     setFavoriteButtonState(btn, shouldFavorite);
 
-    const cards = document.querySelectorAll(`.recipe-card[data-recipe-id="${key}"]`);
-    cards.forEach((card) => {
-      card.classList.toggle('is-favorite', shouldFavorite);
-      const existingBadge = card.querySelector('.card-favorite');
-      if (shouldFavorite && !existingBadge) card.insertAdjacentHTML('afterbegin', favoriteBadgeHtml());
-      if (!shouldFavorite && existingBadge) existingBadge.remove();
-    });
+    // Sync all grid cards + header count
+    updateFavoriteUIForId(id, shouldFavorite);
 
-    state.favoriteRecipesCache = [];
     refreshFavoritesUI();
   });
 }
@@ -190,6 +178,17 @@ export function setupShareButtons() {
   });
 }
 
+function waitForImages(root) {
+  const imgs = root.querySelectorAll('img');
+  return Promise.all(Array.from(imgs).map((img) => {
+    if (img.complete && img.naturalWidth > 0) return Promise.resolve();
+    return new Promise((resolve) => {
+      img.addEventListener('load', resolve, { once: true });
+      img.addEventListener('error', resolve, { once: true });
+    });
+  }));
+}
+
 export function setupPrintRecipe() {
   const details = document.getElementById('recipe-details');
   if (!details) return;
@@ -201,7 +200,7 @@ export function setupPrintRecipe() {
 
   window.addEventListener('afterprint', cleanup);
 
-  details.addEventListener('click', (e) => {
+  details.addEventListener('click', async (e) => {
     const btn = e.target.closest('[data-action="print-recipe"]');
     if (!btn) return;
     e.preventDefault();
@@ -210,6 +209,7 @@ export function setupPrintRecipe() {
     if (recipeTitle) document.title = recipeTitle;
 
     document.body.classList.add('print-mode');
+    await waitForImages(details);
     window.addEventListener('focus', cleanup, { once: true });
     window.print();
   });

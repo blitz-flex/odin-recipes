@@ -1,187 +1,281 @@
 /* Responsive overrides */
-@media (max-width: 1100px) {
-    .categories-bar {
-        padding: 0.1rem 0.25rem 0.25rem;
-    }
-}
 
 @media (max-width: 768px) {
+    :root {
+        --page-gutter: 0.6rem;
+        --page-bottom: 1.25rem;
+        --space-content-cta: 1.25rem;
+    }
+
     body {
-        padding: 1rem;
+        padding: 0.4rem var(--page-gutter) max(var(--page-bottom), env(safe-area-inset-bottom, 0px));
     }
 
     .main-header {
-        padding: 0.5rem 0 0.75rem;
-        margin-bottom: 1.2rem;
+        margin-top: -0.4rem;
+        padding-top: max(0.5rem, env(safe-area-inset-top, 0px));
+        padding-bottom: 0.5rem;
     }
 
     .header-shell {
-        padding: 0.6rem 0.75rem;
-        border-radius: 0;
-    }
-
-    .top-bar {
-        flex-wrap: wrap;
-        gap: 0.6rem;
+        padding: 0 0.4rem;
     }
 
     .brand {
-        display: none;
+        font-size: 1.1rem;
     }
 
-    .top-actions {
-        width: 100%;
-        justify-content: center;
-        flex-wrap: nowrap;
+    .brand-icon {
+        font-size: 1.15em;
     }
 
-    .nav-search {
+    .top-bar {
+        grid-template-columns: 1fr auto;
+        grid-template-areas:
+            "brand actions"
+            "search search";
+        gap: 0.65rem 0.5rem;
+        align-items: center;
+    }
+
+    .brand {
+        grid-area: brand;
+    }
+
+    .header-actions {
+        grid-area: actions;
         width: auto;
-        flex: 1 1 180px;
-        min-width: 0;
-        padding: 0.75rem 1rem;
-        font-size: 0.92rem;
+        justify-self: end;
     }
 
-    .theme-toggle {
-        width: 42px;
-        height: 42px;
-        font-size: 1.2rem;
+    .search-with-categories {
+        grid-area: search;
+        width: 100%;
+        max-width: 100%;
+        margin: 0;
+        min-height: 40px;
+        padding: 0 0.75rem 0 0.65rem;
+        gap: 0.35rem;
     }
 
+    .search-field-icon svg {
+        width: 15px;
+        height: 15px;
+    }
+
+    .search-with-categories .nav-search {
+        padding: 0.55rem 0;
+        font-size: 0.88rem;
+        min-height: 38px;
+    }
+
+    .category-popover {
+        right: 0;
+        width: min(17.5rem, calc(100vw - 1rem));
+    }
+
+    .cat-option-label {
+        font-size: 0.8rem;
+    }
+
+    .header-actions {
+        gap: 0.35rem;
+    }
+
+    .theme-toggle,
     .favorites-toggle {
-        width: 42px;
-        height: 42px;
+        width: 38px;
+        height: 38px;
+        border-radius: var(--radius-pill);
+    }
+
+    .categories-toggle {
+        height: 38px;
+        padding: 0 0.5rem;
+        font-size: 0.72rem;
+        gap: 0.25rem;
+    }
+
+    .categories-toggle .cat-text {
+        font-size: 0.65rem;
+    }
+
+    .categories-toggle .cat-icon svg {
+        width: 15px;
+        height: 15px;
     }
 
     .favorites-toggle-icon {
-        width: 21px;
-        height: 21px;
+        width: 18px;
+        height: 18px;
     }
 
-    .categories-bar {
-        justify-content: flex-start;
-        gap: 0.6rem;
-        padding: 0.1rem 0.25rem 0.25rem;
+    .fav-count {
+        min-width: 10px;
+        height: 10px;
+        font-size: 0.42rem;
+        line-height: 10px;
+        top: 1px;
+        right: 1px;
     }
 
-    .category-btn {
-        padding: 0.5rem 1rem;
-        font-size: 1.05rem;
-        min-height: 40px;
+    .sacred-ledger {
+        padding: 1rem 0.5rem 0;
+    }
+
+    .ledger-motto {
+        font-size: 0.6rem;
+    }
+
+    .ledger-rule {
+        max-width: 60px;
     }
 
     .recipes-grid {
         grid-template-columns: 1fr;
-        gap: 1.5rem;
-        padding: 0;
+        gap: 1.15rem;
+        padding: 0.75rem var(--page-gutter) 0;
     }
 
-    .card-favorite {
+    .recipe-image {
+        height: 168px;
+    }
+
+    .card-heart {
         width: 28px;
         height: 28px;
         top: 10px;
         right: 10px;
     }
 
-    .card-favorite svg {
+    .card-heart svg {
+        width: 15px;
+        height: 15px;
+    }
+
+    .modal {
+        padding: 0.75rem var(--page-gutter);
+    }
+
+    .modal-content {
+        width: 100%;
+        max-height: 92vh;
+        border-radius: 14px;
+    }
+
+    .recipe-detail-hero {
+        height: 132px;
+    }
+
+    .recipe-detail-hero-content {
+        padding: 0.75rem 1rem 0.9rem;
+    }
+
+    .recipe-detail-intro {
+        padding: 0.85rem 1rem 0.75rem;
+    }
+
+    .recipe-detail-body {
+        padding: 0.85rem 1rem 1rem;
+    }
+
+    .recipe-detail-title {
+        font-size: 1.1rem;
+    }
+
+    .recipe-columns {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+    }
+
+    .recipe-panel {
+        padding: 0.75rem 0.8rem 0.85rem;
+    }
+
+    .recipe-actions {
+        flex-wrap: wrap;
+        gap: 0.55rem;
+        padding: 0.7rem 1rem;
+    }
+
+    .action-btn {
+        margin-left: auto;
+    }
+
+}
+
+@media (max-width: 360px) {
+    :root {
+        --page-gutter: 0.5rem;
+    }
+
+    .header-shell {
+        padding: 0 0.25rem;
+    }
+
+    .main-header {
+        padding-bottom: 0.4rem;
+    }
+
+    .top-bar {
+        gap: 0.5rem 0.35rem;
+    }
+
+    .brand {
+        font-size: 1rem;
+    }
+
+    .search-with-categories {
+        min-height: 36px;
+        padding: 0 0.65rem 0 0.55rem;
+    }
+
+    .search-field-icon svg {
         width: 14px;
         height: 14px;
     }
 
-    .modal {
-        padding: 0;
-    }
-
-    .modal-content {
-        margin: 0;
-        border-radius: 0;
-        max-width: 100%;
-        min-height: 100vh;
-    }
-
-    .recipe-actions {
-        gap: 0.6rem;
-        flex-wrap: wrap;
-    }
-
-    .actions-right {
-        width: 100%;
-        justify-content: flex-end;
-        margin-left: 0;
-    }
-
-    .share-icon-btn {
-        width: 40px;
-        height: 40px;
-    }
-
-    .share-icon-btn svg {
-        width: 17px;
-        height: 17px;
-    }
-
-    .action-btn {
-        padding: 0.65rem 1.05rem;
-        font-size: 0.88rem;
-        min-height: 40px;
-    }
-
-    .video-link {
-        padding: 0.32rem 0.65rem;
-        font-size: 0.76rem;
-        min-height: 30px;
-    }
-
-    .video-link-icon-wrap {
-        width: 22px;
-        height: 22px;
-    }
-
-    .video-link-icon {
-        width: 12px;
-        height: 12px;
-    }
-
-    .recipe-detail-image {
-        height: 250px;
-    }
-
-    .recipe-detail-content {
-        padding: 1.5rem;
-    }
-
-    .recipe-detail-title {
-        font-size: 1.8rem;
-    }
-
-    .section {
-        padding: 1.5rem;
-    }
-
-    .ingredients-list {
-        grid-template-columns: 1fr;
-    }
-
-    .close {
-        right: 10px;
-        top: 10px;
-    }
-}
-
-@media (max-width: 360px) {
-    .header-shell {
-        padding: 0.55rem 0.6rem 0.7rem;
-    }
-
-    .top-actions {
-        gap: 0.5rem;
+    .search-with-categories .nav-search {
+        padding: 0.45rem 0;
+        font-size: 0.82rem;
+        min-height: 34px;
     }
 
     .theme-toggle,
     .favorites-toggle {
-        width: 40px;
-        height: 40px;
+        width: 34px;
+        height: 34px;
+        border-radius: var(--radius-pill);
+    }
+
+    .categories-toggle {
+        height: 34px;
+        padding: 0 0.4rem;
+        font-size: 0.65rem;
+        gap: 0.2rem;
+    }
+
+    .categories-toggle .cat-text {
+        font-size: 0.58rem;
+    }
+
+    .categories-toggle .cat-icon svg {
+        width: 14px;
+        height: 14px;
+    }
+
+    .favorites-toggle-icon {
+        width: 16px;
+        height: 16px;
+    }
+
+    .fav-count {
+        min-width: 9px;
+        height: 9px;
+        font-size: 0.4rem;
+        line-height: 9px;
+        top: 0;
+        right: 0;
     }
 }
 
@@ -189,20 +283,23 @@
     .recipes-grid {
         grid-template-columns: repeat(2, 1fr);
     }
-}
 
-/* Moved from detail.css for centralization */
-@media (min-width: 900px) {
-    .ingredients-list {
-        grid-template-columns: repeat(3, 1fr);
+    .top-bar {
+        gap: 0.75rem;
+    }
+
+    .categories-toggle .cat-text {
+        max-width: 5.5rem;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 }
 
+
 @media (prefers-reduced-motion: reduce) {
-    .video-link,
-    .video-link-icon,
-    .video-link-icon-wrap {
+    .favorite-pill,
+    .share-icon-btn,
+    .action-btn {
         transition: none !important;
-        animation: none !important;
     }
 }

@@ -1,8 +1,5 @@
 import { state } from '../core/state.js';
-
 import { API_BASE_URL } from '../core/config.js';
-
-const API_URL = API_BASE_URL;
 
 export async function getRandomRecipes(count = state.PAGE_SIZE, excludeIds = new Set()) {
   const recipes = [];
@@ -14,7 +11,7 @@ export async function getRandomRecipes(count = state.PAGE_SIZE, excludeIds = new
   while (recipes.length < count && attempts < maxAttempts) {
     attempts++;
     try {
-      const response = await fetch(`${API_URL}/random.php`);
+      const response = await fetch(`${API_BASE_URL}/random.php`);
       if (!response.ok) {
         console.error(`Random recipe fetch failed with status ${response.status}`);
         continue;
@@ -42,7 +39,7 @@ export async function getRandomRecipes(count = state.PAGE_SIZE, excludeIds = new
 
 export async function searchRecipes(query) {
   try {
-    const response = await fetch(`${API_URL}/search.php?s=${encodeURIComponent(query)}`);
+    const response = await fetch(`${API_BASE_URL}/search.php?s=${encodeURIComponent(query)}`);
     if (!response.ok) {
       console.error(`Search failed with status ${response.status}`);
       return [];
@@ -57,7 +54,7 @@ export async function searchRecipes(query) {
 
 export async function filterByCategory(category) {
   try {
-    const response = await fetch(`${API_URL}/filter.php?c=${encodeURIComponent(category)}`);
+    const response = await fetch(`${API_BASE_URL}/filter.php?c=${encodeURIComponent(category)}`);
     if (!response.ok) {
       console.error(`Filter by category failed with status ${response.status}`);
       return [];
@@ -72,7 +69,7 @@ export async function filterByCategory(category) {
 
 export async function getRecipeDetails(id) {
   try {
-    const response = await fetch(`${API_URL}/lookup.php?i=${id}`);
+    const response = await fetch(`${API_BASE_URL}/lookup.php?i=${id}`);
     if (!response.ok) {
       console.error(`Recipe details fetch failed with status ${response.status}`);
       return null;

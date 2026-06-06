@@ -1,4 +1,4 @@
-import { FAVORITES_STORAGE_KEY, PAGE_SIZE_TABLET } from './config.js';
+import { PAGE_SIZE_TABLET } from './config.js';
 
 export const state = {
   allRecipes: [],
@@ -9,7 +9,6 @@ export const state = {
   currentQuery: '',
   ORIGINAL_TITLE: document.title,
   currentRecipeForShare: null,
-  FAVORITES_STORAGE_KEY: FAVORITES_STORAGE_KEY,
   favoritesOnlySnapshot: null,
   favoriteRecipesCache: [],
 };

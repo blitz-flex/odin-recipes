@@ -1,9 +1,10 @@
 import { state } from '../core/state.js';
+import { FAVORITES_STORAGE_KEY } from '../core/config.js';
 import { getRecipeDetails } from '../api/api.js';
 
 export function readFavoriteIds() {
   try {
-    const raw = localStorage.getItem(state.FAVORITES_STORAGE_KEY);
+    const raw = localStorage.getItem(FAVORITES_STORAGE_KEY);
     if (!raw) return new Set();
     const parsed = JSON.parse(raw);
     if (!Array.isArray(parsed)) return new Set();
@@ -15,7 +16,7 @@ export function readFavoriteIds() {
 
 export function writeFavoriteIds(favoriteIds) {
   try {
-    localStorage.setItem(state.FAVORITES_STORAGE_KEY, JSON.stringify(Array.from(favoriteIds)));
+    localStorage.setItem(FAVORITES_STORAGE_KEY, JSON.stringify(Array.from(favoriteIds)));
     return true;
   } catch {
     return false;
@@ -64,4 +65,61 @@ export async function loadFavoriteRecipes() {
 
   state.favoriteRecipesCache = recipes;
   return recipes;
+}
+
+/**
+ * Core toggle logic. Returns the new favorite state (true = now favorited).
+ */
+export function toggleFavoriteById(id) {
+  const key = String(id);
+  const favorites = readFavoriteIds();
+  const shouldFavorite = !favorites.has(key);
+
+  if (shouldFavorite) {
+    favorites.add(key);
+  } else {
+    favorites.delete(key);
+  }
+  writeFavoriteIds(favorites);
+
+  // Invalidate cache so favorites view refreshes correctly
+  state.favoriteRecipesCache = [];
+
+  return shouldFavorite;
+}
+
+/**
+ * Update all visible cards + header count for a given recipe id.
+ * Call this after any favorite change.
+ */
+export function updateFavoriteUIForId(id, isFavorite) {
+  const key = String(id);
+
+  // Update all matching cards in the grid
+  const cards = document.querySelectorAll(`.recipe-card[data-recipe-id="${key}"]`);
+  cards.forEach((card) => {
+    card.classList.toggle('is-favorite', isFavorite);
+
+    const heart = card.querySelector('.card-heart');
+    if (heart) {
+      heart.classList.toggle('active', isFavorite);
+      heart.setAttribute('aria-label', isFavorite ? 'Remove from favorites' : 'Add to favorites');
+      heart.setAttribute('title', isFavorite ? 'Remove from favorites' : 'Add to favorites');
+    }
+  });
+
+  // Update header count
+  updateFavoritesCountBadge();
+}
+
+/**
+ * Update the favorites count number in the header button (badge design).
+ */
+export function updateFavoritesCountBadge() {
+  const countEl = document.getElementById('favorites-count');
+  if (!countEl) return;
+
+  const count = readFavoriteIds().size;
+  countEl.textContent = count > 0 ? count : '';
+  countEl.classList.toggle('has-count', count > 0);
 }

@@ -5,12 +5,11 @@ import {
   emptyRecipesHtml,
   emptyFavoritesHtml,
 } from './templates.js';
+import { readFavoriteIds } from '../features/favorites.js';
 
-export function setActiveCategory(category) {
-  const categoryBtns = document.querySelectorAll('.category-btn');
-  categoryBtns.forEach((btn) => {
-    btn.classList.toggle('active', btn.dataset.category === category);
-  });
+function renderCards(recipes) {
+  const favSet = readFavoriteIds();
+  return recipes.map((r) => recipeCardHtml(r, favSet)).join('');
 }
 
 export function renderRecipeList(container, recipes) {
@@ -19,48 +18,50 @@ export function renderRecipeList(container, recipes) {
     container.innerHTML = emptyFavoritesHtml();
     return;
   }
-  container.innerHTML = recipes.map((r) => recipeCardHtml(r)).join('');
+  container.innerHTML = renderCards(recipes);
+}
+
+function getLoadMoreContainer() {
+  return document.querySelector('.load-more-container');
 }
 
 export function updateLoadMoreVisibility() {
-  const loadMoreBtn = document.getElementById('load-more-btn');
-  if (!loadMoreBtn) return;
+  const loadMoreContainer = getLoadMoreContainer();
+  if (!loadMoreContainer) return;
 
-  if (state.currentMode === 'favorites') {
-    loadMoreBtn.style.display = 'none';
-    return;
+  let show = false;
+  if (state.currentMode !== 'favorites') {
+    if (state.currentMode === 'random') {
+      show = state.allRecipes.length > 0;
+    } else {
+      show = state.displayedRecipes.length < state.allRecipes.length;
+    }
   }
-  if (state.currentMode === 'random') {
-    loadMoreBtn.style.display = state.allRecipes.length ? 'block' : 'none';
-    return;
-  }
-  loadMoreBtn.style.display = state.displayedRecipes.length < state.allRecipes.length ? 'block' : 'none';
+  loadMoreContainer.classList.toggle('is-visible', show);
 }
 
 export function showLoading() {
   const container = document.getElementById('recipes-container');
-  const loadMoreBtn = document.getElementById('load-more-btn');
-  if (loadMoreBtn) loadMoreBtn.style.display = 'none';
-  if (container) container.setAttribute('aria-busy', 'true');
+  getLoadMoreContainer()?.classList.remove('is-visible');
   if (!container) return;
+  container.setAttribute('aria-busy', 'true');
   container.innerHTML = skeletonsHtml(state.PAGE_SIZE);
 }
 
-export function renderRecipes(recipes, isInitialLoad = false) {
+export function renderRecipes(recipes) {
   const container = document.getElementById('recipes-container');
-  const loadMoreBtn = document.getElementById('load-more-btn');
-  if (!container || !loadMoreBtn) return;
+  if (!container) return;
 
   if (!recipes?.length) {
     container.innerHTML = emptyRecipesHtml();
-    loadMoreBtn.style.display = 'none';
+    getLoadMoreContainer()?.classList.remove('is-visible');
     return;
   }
 
   state.allRecipes = recipes;
   state.displayedRecipes = recipes.slice(0, state.PAGE_SIZE);
 
-  container.innerHTML = state.displayedRecipes.map((r) => recipeCardHtml(r)).join('');
+  container.innerHTML = renderCards(state.displayedRecipes);
   container.setAttribute('aria-busy', 'false');
   updateLoadMoreVisibility();
 }

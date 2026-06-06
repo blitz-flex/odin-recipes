@@ -1,17 +1,15 @@
 import { state } from '../core/state.js';
 import {
-  readFavoriteIds,
   loadFavoriteRecipes,
   filterFavoriteRecipes,
   isFavoritesOnlyMode,
+  readFavoriteIds,
 } from './favorites.js';
 import {
   renderRecipeList,
-  recipeCardHtml,
-  setActiveCategory,
   updateLoadMoreVisibility,
 } from '../ui/ui.js';
-import { skeletonsHtml } from '../ui/templates.js';
+import { recipeCardHtml, skeletonsHtml } from '../ui/templates.js';
 
 export function snapshotCurrentView() {
   const searchInput = document.getElementById('search-input');
@@ -35,21 +33,20 @@ export function restoreSnapshot(snapshot) {
 
   const container = document.getElementById('recipes-container');
   if (container) {
-    container.innerHTML = state.displayedRecipes.map((r) => recipeCardHtml(r)).join('');
+    const favSet = readFavoriteIds();
+    container.innerHTML = state.displayedRecipes.map((r) => recipeCardHtml(r, favSet)).join('');
     container.setAttribute('aria-busy', 'false');
   }
 
   const searchInput = document.getElementById('search-input');
   if (searchInput) searchInput.value = snapshot.searchValue;
-  setActiveCategory(snapshot.currentCategory || 'all');
   updateLoadMoreVisibility();
+  if (window.__updateCategoryLabel) window.__updateCategoryLabel();
 }
 
 export async function renderFavoritesOnlyView() {
   const container = document.getElementById('recipes-container');
-  const loadMoreBtn = document.getElementById('load-more-btn');
   if (!container) return;
-  if (loadMoreBtn) loadMoreBtn.style.display = 'none';
 
   container.innerHTML = skeletonsHtml(Math.min(state.PAGE_SIZE, 6));
 
@@ -60,6 +57,7 @@ export async function renderFavoritesOnlyView() {
   state.currentMode = 'favorites';
 
   renderRecipeList(container, filtered);
+  updateLoadMoreVisibility();
 }
 
 export async function refreshFavoritesUI() {

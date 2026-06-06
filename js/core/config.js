@@ -6,6 +6,9 @@
 // API Configuration
 export const API_BASE_URL = 'https://www.themealdb.com/api/json/v1/1';
 
+// Categories with very few recipes — hidden from the panel
+export const EXCLUDED_CATEGORIES = ['Goat', 'Vegan'];
+
 // Pagination & Layout Configuration
 export const PAGE_SIZE_MOBILE = 8;
 export const PAGE_SIZE_TABLET = 12;

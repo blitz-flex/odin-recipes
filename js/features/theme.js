@@ -33,28 +33,3 @@ export function setupDarkMode() {
 
   syncToggleState();
 }
-
-export function setupStickyControlsBar() {
-  const controlsBar = document.querySelector('.main-header');
-  if (!controlsBar) return;
-  const recipesContainer = document.getElementById('recipes-container');
-  const triggerOffsetPx = 12;
-
-  let ticking = false;
-  const update = () => {
-    const controlsRect = controlsBar.getBoundingClientRect();
-    const isStuck = recipesContainer
-      ? recipesContainer.getBoundingClientRect().top <= (controlsRect.bottom + triggerOffsetPx)
-      : controlsRect.top <= -triggerOffsetPx;
-    controlsBar.classList.toggle('is-stuck', isStuck);
-    ticking = false;
-  };
-
-  update();
-
-  window.addEventListener('scroll', () => {
-    if (ticking) return;
-    ticking = true;
-    window.requestAnimationFrame(update);
-  }, { passive: true });
-}
